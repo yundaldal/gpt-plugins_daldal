@@ -1,0 +1,25 @@
+{
+  "author": {
+    "name": "달달샘"
+  },
+  "description": "기안할 때 관련 공문을 참고해야 할때 에듀파인에서 캡쳐해서 넣어주면 추출해줍니다.",
+  "interface": {
+    "capabilities": [
+      "skills"
+    ],
+    "category": "Productivity",
+    "composerIcon": "./assets/gpt-icon.png",
+    "defaultPrompt": [
+      "활용 방법 알려줘.",
+      "캡쳐도구로 캡쳐하여 Ctrl+V로 채팅창에 붙여넣기!"
+    ],
+    "developerName": "달달샘",
+    "displayName": "관련 공문 정보 추출기_달달샘",
+    "logo": "./assets/gpt-icon.png",
+    "longDescription": "기안할 때 관련 공문을 참고해야 할때 에듀파인에서 캡쳐해서 넣어주면 추출해줍니다.",
+    "shortDescription": "기안할 때 관련 공문을 참고해야 할때 에듀파인에서 캡쳐해서 넣어주면 추출해줍니다."
+  },
+  "name": "gpt-7a2194713d27b06e7af915bc14b663d2",
+  "skills": "./skills/",
+  "version": "0.13.1+bundle.908279f6570472cdf9a9d76de44512df"
+}

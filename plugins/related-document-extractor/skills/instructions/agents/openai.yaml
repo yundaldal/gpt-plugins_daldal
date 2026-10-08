@@ -1,0 +1,4 @@
+interface:
+  default_prompt: 활용 방법 알려줘.
+  display_name: 관련 공문 정보 추출기_달달샘
+  short_description: 기안할 때 관련 공문을 참고해야 할때 에듀파인에서 캡쳐해서 넣어주면 추출해줍니다.
