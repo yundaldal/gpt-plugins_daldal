@@ -1,0 +1,29 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "author": {
+    "name": "달달샘"
+  },
+  "description": "유아특수, 초중고특수의 공통, 기본 교육과정 성취기준 기반 IEP 작성",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "capabilities": [
+          "skills"
+        ],
+        "category": "Education & Research",
+        "composerIcon": "./assets/gpt-icon.png",
+        "defaultPrompt": [
+          "시작을 입력하세요",
+          "나이스에서 예전 IEP 다운받아 입력 가능"
+        ],
+        "developerName": "달달샘",
+        "displayName": "특수교육 개별화교육계획(IEP)설계 도우미_성취기준도 연결_달달샘",
+        "logo": "./assets/gpt-icon.png",
+        "longDescription": "유아특수, 초중고특수의 공통, 기본 교육과정 성취기준 기반 IEP 작성",
+        "shortDescription": "유아특수, 초중고특수의 공통, 기본 교육과정 성취기준 기반 IEP 작성"
+      }
+    }
+  },
+  "name": "gpt-71b1c607d08a7c6cbf7c7fb79b8fef6a",
+  "version": "0.17.1+bundle.9c936b541291df803200bba71c3a07e4"
+}

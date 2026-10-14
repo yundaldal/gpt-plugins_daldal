@@ -1,0 +1,26 @@
+{
+  "author": {
+    "name": "달달샘"
+  },
+  "description": "정보만 입력하면 다양한 형태의 품의문과 엑셀폼을 생성합니다.",
+  "interface": {
+    "capabilities": [
+      "skills"
+    ],
+    "category": "Productivity",
+    "composerIcon": "./assets/gpt-icon.png",
+    "defaultPrompt": [
+      "\"시작\" 을 입력하세요",
+      "\"장바구니\"를 긁어서 복사하여 입력해주시면 됩니다.",
+      "견적서를 업로드해도 됩니다."
+    ],
+    "developerName": "달달샘",
+    "displayName": "품의기안문과 첨부엑셀파일을 생성하는 AI - 달달샘",
+    "logo": "./assets/gpt-icon.png",
+    "longDescription": "정보만 입력하면 다양한 형태의 품의문과 엑셀폼을 생성합니다.",
+    "shortDescription": "정보만 입력하면 다양한 형태의 품의문과 엑셀폼을 생성합니다."
+  },
+  "name": "gpt-2078f8322c523f06ce162e2074e6fdae",
+  "skills": "./skills/",
+  "version": "0.14.1+bundle.7989701c85ce7ed0c432483cfbc4f979"
+}

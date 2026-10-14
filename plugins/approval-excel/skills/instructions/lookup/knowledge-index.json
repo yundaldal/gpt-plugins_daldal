@@ -1,0 +1,29 @@
+{
+  "files": [
+    {
+      "name": "견적서 업로드 및 분석 상세 안내.docx",
+      "path": "references/견적서 업로드 및 분석 상세 안내.docx"
+    },
+    {
+      "name": "견적서 업로드 상세 안내.docx",
+      "path": "references/견적서 업로드 상세 안내.docx"
+    },
+    {
+      "name": "기본 안내 메시지 및 품의 유형별 템플릿.docx",
+      "path": "references/기본 안내 메시지 및 품의 유형별 템플릿.docx"
+    },
+    {
+      "name": "수당지급 템플릿 및 품의문 예시 모음.docx",
+      "path": "references/수당지급 템플릿 및 품의문 예시 모음.docx"
+    },
+    {
+      "name": "수당지급 템플릿 및 품의문 작성 가이드.docx",
+      "path": "references/수당지급 템플릿 및 품의문 작성 가이드.docx"
+    },
+    {
+      "name": "실제 학교 품의문 유형별 예시.docx",
+      "path": "references/실제 학교 품의문 유형별 예시.docx"
+    }
+  ],
+  "guidelines": "Resolve each files[].path relative to the directory containing this skill's SKILL.md (the skill root), not this index's lookup/ directory or the current working directory. Use that directory for filesystem reads or append the path unchanged to the skill's root resource URI. This index is not a complete inventory of the plugin's files. If a needed file is absent from this index or cannot be found or read at its indexed path, continue normal file discovery using the skill's available file listing or installed files; do not stop or conclude that the file is unavailable based on this index alone. This index is primarily a GPT migration helper that maps original GPT upload names to packaged filenames in the plugin."
+}

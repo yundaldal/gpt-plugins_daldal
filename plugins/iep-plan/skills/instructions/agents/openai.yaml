@@ -1,0 +1,4 @@
+interface:
+  default_prompt: 시작을 입력하세요
+  display_name: 특수교육 개별화교육계획(IEP)설계 도우미_성취기준도 연결_달달샘
+  short_description: 유아특수, 초중고특수의 공통, 기본 교육과정 성취기준 기반 IEP 작성

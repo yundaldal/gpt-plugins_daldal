@@ -1,9 +1,93 @@
 {
-  "name": "daldal-pumui-marketplace",
+  "name": "daldal-education-plugins",
   "interface": {
-    "displayName": "달달 품의 플러그인"
+    "displayName": "달달샘 교육 플러그인"
   },
   "plugins": [
+    {
+      "name": "gpt-7a2194713d27b06e7af915bc14b663d2",
+      "source": {
+        "source": "local",
+        "path": "./plugins/related-document-extractor"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "gpt-8f59e45caa9ee9b09efe337fbbe41c7a",
+      "source": {
+        "source": "local",
+        "path": "./plugins/iep-eval"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Education & Research"
+    },
+    {
+      "name": "gpt-873735b205262e25a3d59729f212e30f",
+      "source": {
+        "source": "local",
+        "path": "./plugins/ib-core"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Education & Research"
+    },
+    {
+      "name": "gpt-2078f8322c523f06ce162e2074e6fdae",
+      "source": {
+        "source": "local",
+        "path": "./plugins/approval-excel"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "gpt-7be28bd2851df2498ae85336e75c7054",
+      "source": {
+        "source": "local",
+        "path": "./plugins/ib-planner"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Education & Research"
+    },
+    {
+      "name": "gpt-b6d17e7e3219e198711e3ffe06fb7803",
+      "source": {
+        "source": "local",
+        "path": "./plugins/canva-game"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Education & Research"
+    },
+    {
+      "name": "gpt-71b1c607d08a7c6cbf7c7fb79b8fef6a",
+      "source": {
+        "source": "local",
+        "path": "./plugins/iep-plan"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Education & Research"
+    },
     {
       "name": "pumui-daldal",
       "source": {

@@ -1,0 +1,26 @@
+{
+  "author": {
+    "name": "달달샘"
+  },
+  "description": "평가내용을 솔직편하게 적고, 긍정적이고 나이스 입력 가능 스타일로 바꿔주라고 하세요",
+  "interface": {
+    "capabilities": [
+      "skills"
+    ],
+    "category": "Education & Research",
+    "composerIcon": "./assets/gpt-icon.png",
+    "defaultPrompt": [
+      "1. A의 월별 교육목표:, 내용:, 방법:, 평가계획: 을 입력",
+      "2. A의 평가를 시작한다고 해주세요.",
+      "3,. 생성된 평가내용을 긍정적으로 바꿔달라고 하세요."
+    ],
+    "developerName": "달달샘",
+    "displayName": "특수교육 개별화교육계획(iep)평가 입력 도우미_달달샘",
+    "logo": "./assets/gpt-icon.png",
+    "longDescription": "평가내용을 솔직편하게 적고, 긍정적이고 나이스 입력 가능 스타일로 바꿔주라고 하세요",
+    "shortDescription": "평가내용을 솔직편하게 적고, 긍정적이고 나이스 입력 가능 스타일로 바꿔주라고 하세요"
+  },
+  "name": "gpt-8f59e45caa9ee9b09efe337fbbe41c7a",
+  "skills": "./skills/",
+  "version": "0.11.1+bundle.35697fe122892b4ba2f51023f149264b"
+}

@@ -1,0 +1,26 @@
+{
+  "interface": {
+    "capabilities": [
+      "skills"
+    ],
+    "category": "Education & Research",
+    "composerIcon": "./assets/gpt-icon.png",
+    "defaultPrompt": [
+      "어떤 학습활동을 하고 싶나요",
+      "원하는 형태의 이미지도 업로드해보세요"
+    ],
+    "developerName": "달달샘",
+    "displayName": "캔바 AI 코드 생성 프롬프트 생성기",
+    "logo": "./assets/gpt-icon.png",
+    "longDescription": "캔바AI가 잘 이해하는 프롬프트로 변환",
+    "shortDescription": "캔바AI가 잘 이해하는 프롬프트로 변환"
+  },
+  "name": "gpt-b6d17e7e3219e198711e3ffe06fb7803",
+  "version": "0.7.0",
+  "description": "캔바AI가 잘 이해하는 프롬프트로 변환",
+  "author": {
+    "name": "달달샘"
+  },
+  "keywords": [],
+  "skills": "./skills"
+}

@@ -1,0 +1,4 @@
+interface:
+  default_prompt: '1. A의 월별 교육목표:, 내용:, 방법:, 평가계획: 을 입력'
+  display_name: 특수교육 개별화교육계획(iep)평가 입력 도우미_달달샘
+  short_description: 평가내용을 솔직편하게 적고, 긍정적이고 나이스 입력 가능 스타일로 바꿔주라고 하세요

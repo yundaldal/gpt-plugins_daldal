@@ -1,34 +1,34 @@
 # 달달샘 GPT 플러그인 모음
 
-교육·업무용 플러그인을 모아 공유하는 저장소입니다.
+교육·업무용 플러그인을 모아 공유하는 저장소입니다. 기존 플러그인과 공개용으로 점검한 플러그인 6종을 제공합니다.
 
-| 플러그인 | 설명 | 개별 ZIP 다운로드 | 사용 안내·원본 |
+| 플러그인 | 주요 기능 | 다운로드 | 사용·기능 안내 |
 |---|---|---|---|
-| 관련 공문 정보 추출기_달달샘 | 공문 목록 이미지에서 문서번호·날짜·제목 추출 | [플러그인 ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/related-document-extractor.zip) | [사용 안내·원본](plugins/related-document-extractor/) |
-| 품의 기안 도우미_달달샘 | 수당·물품·경비 품의 초안, 계산 산출물 및 교차 점검 | [플러그인 ZIP 다운로드 (0.1.1)](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/pumui-daldal-0.1.1.zip) | [설치·사용 안내·원본](plugins/pumui-daldal/) |
+| 관련 공문 정보 추출기_달달샘 | 기안할 때 관련 공문을 참고해야 할때 에듀파인에서 캡쳐해서 넣어주면 추출해줍니다. | [ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/related-document-extractor.zip) | [플러그인 안내](plugins/related-document-extractor/README.md) |
+| 품의 기안 도우미_달달샘 | 수당·물품·경비 품의 초안, 계산 산출물 및 교차 점검 | [ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/pumui-daldal-0.1.1.zip) | [사용 안내·원본](plugins/pumui-daldal/) |
+| 특수교육 개별화교육계획(iep)평가 입력 도우미_달달샘 | 월별 교육목표·내용·방법·평가계획과 관찰 기록을 바탕으로 특수교육 평가 문장을 간결하고 긍정적인 NEIS 입력 형태로 다듬습니다. | [ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/iep-eval.zip) | [플러그인 안내](plugins/iep-eval/README.md) |
+| 개념기반 교육과정 설계 도우미(핵심개념, 일반화, 탐구질문을 생성) - 달달샘 | 수업 주제와 교과·학년 맥락을 바탕으로 핵심개념, 일반화 문장, 사실적·개념적·논쟁적 탐구질문을 연결해 설계합니다. | [ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/ib-core.zip) | [플러그인 안내](plugins/ib-core/README.md) |
+| 품의기안문과 첨부엑셀파일을 생성하는 AI - 달달샘 | 견적서나 품목 목록을 분석해 학교 품의 문안과 항목·수량·단가·합계를 담은 업로드용 Excel을 작성합니다. 파일 근거와 금액 산식을 대조합니다. | [ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/approval-excel.zip) | [플러그인 안내](plugins/approval-excel/README.md) |
+| 개념기반 교육과정 설계 디자이너 챗봇 (Feat. 에듀테크)- 다양한 학습자용_달달샘 | 교육과정·학년·교과 맥락을 순서대로 확인한 뒤 개념 기반 단원 요소와 차시별 지도안을 설계합니다. 학생의 다양한 학습 요구에 맞는 수업 지원도 연결합니다. | [ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/ib-planner.zip) | [플러그인 안내](plugins/ib-planner/README.md) |
+| 캔바 AI 코드 생성 프롬프트 생성기 | 수업 아이디어를 Canva AI 또는 Canva Code에 넣을 한국어 학습 게임 제작 프롬프트로 바꿉니다. 상호작용, 화면 흐름, 접근성, 반응형 동작과 오류 회복을 구체화합니다. | [ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/canva-game.zip) | [플러그인 안내](plugins/canva-game/README.md) |
+| 특수교육 개별화교육계획(IEP)설계 도우미_성취기준도 연결_달달샘 | 학생의 현재 수준과 지원 요구를 바탕으로 개별화교육계획을 단계적으로 설계하고, 포함된 특수교육 교육과정 기준표에서 실제 분류번호와 문구를 확인해 연결합니다. | [ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/iep-plan.zip) | [플러그인 안내](plugins/iep-plan/README.md) |
 
-## 플러그인 하나씩 다운로드하기
+## 설치 안내
 
-1. 표에서 필요한 플러그인의 **플러그인 ZIP 다운로드**를 누릅니다.
-2. 해당 플러그인 ZIP 하나만 내려받습니다. 품의 기안 도우미 ZIP에는 플러그인 설명, 스킬, 참고 자료, 빈 서식, 스크립트가 함께 들어 있습니다.
-3. 저장소 화면의 **Code → Download ZIP**은 플러그인 하나가 아니라 저장소 전체를 받습니다. 데스크톱에서 로컬 마켓플레이스를 설치할 때는 전체 저장소가 필요할 수 있습니다.
+[무료·유료 계정별 설치 조건, ZIP 업로드, GitHub 마켓플레이스 가져오기](INSTALLATION.md)를 확인하세요. GitHub에서 ZIP을 내려받는 것만으로 ChatGPT에 자동 설치되지는 않습니다.
 
-직접 링크가 열리지 않으면 [downloads 폴더](downloads/)에서 원하는 플러그인 ZIP 파일을 열고 **Download raw file**을 선택하세요.
+ZIP 다운로드와 ChatGPT 설치는 별개입니다. 이 저장소의 ZIP 설치 동작은 검증하지 않았으며, 실제 설치 메뉴 제공 여부는 계정·워크스페이스·관리자 권한에 따라 달라집니다. 배포 파일은 `downloads/` 폴더에서 제공하며 GitHub Releases는 아직 구성하지 않았습니다.
 
-## 설치 경로 선택
+## 플러그인 형식
 
-- **ChatGPT 웹에서 ZIP 업로드:** 업로드 권한이 있는 워크스페이스 관리자 등이 사용할 수 있습니다. **관리자 콘솔 → 워크스페이스 선택 → 플러그인 → 추가 → 플러그인 업로드**로 들어가 해당 플러그인의 ZIP을 올립니다. 메뉴가 보이지 않으면 계정·워크스페이스 역할의 업로드 권한을 확인하세요.
-- **ChatGPT Desktop 로컬 마켓플레이스:** 지원되는 데스크톱 환경에서는 Codex CLI에서 `codex plugin marketplace add yundaldal/gpt-plugins_daldal`을 실행하고 앱을 다시 시작한 뒤, **플러그인 디렉터리**에서 `달달 품의 플러그인`을 선택해 설치할 수 있습니다. 저장소 전체를 압축 해제해 사용하는 경우 저장소 루트에서 `codex plugin marketplace add .`을 실행합니다.
-- **개인용 Free·Plus 계정:** 플러그인 디렉터리는 여러 요금제에서 제공되지만, 개별 플러그인의 설치와 ZIP 업로드는 계정·화면·지역·워크스페이스 권한에 따라 달라집니다. 이 저장소에 GitHub로 공개했다고 해서 공개 플러그인 디렉터리에 등록된 것은 아닙니다. 개인 계정에 ZIP 업로드 메뉴가 없다면 지원되는 데스크톱 로컬 마켓플레이스 또는 업로드 권한이 있는 워크스페이스를 이용하세요.
+새로 추가한 6개는 외부 MCP 서버나 API 키를 요구하지 않는 Skills 전용 플러그인입니다. 사용자 요청에 맞는 지침과 참고자료를 ChatGPT에 제공합니다.
 
-품의 플러그인의 구체적인 설치 단계와 자료 준비 방법은 [품의 기안 도우미 안내](plugins/pumui-daldal/README.md)를 참고하세요. 플러그인 ZIP을 Custom GPT의 **지식(Knowledge)** 파일로 올리는 것은 플러그인 설치와 다릅니다.
+## 공개 자료 점검
 
-## 개인정보와 정확성
+학생 사례는 식별할 수 없는 합성 예시로 바꿨고, 학교·기관명·개인 이름·내부 문서번호와 Office 작성자 메타데이터를 정리했습니다. IEP 성취기준 데이터는 원본 표 본문을 보존했습니다. IEP 참고 PDF 캡처 5개는 공개 재배포 대신 주제와 작성 절차를 담은 자체 안내 자료로 대체했습니다.
 
-공개 플러그인의 예시와 검증 자료는 가상 정보입니다. 실제 공문 이미지, 품의 입력·출력 자료, 성명·계좌, 대화 기록, 인증 정보는 포함하지 않습니다. 문서와 계산 결과는 검토용 초안이며, 원본 자료·단가 적용 여부·회계 요건을 담당자가 확인한 뒤 사용하세요. 플러그인별 지원 범위와 설치 조건은 각 사용 안내를 참고하세요.
+예시와 시험용 입력은 가상 정보이며, IEP 성취기준표는 정확성을 위해 공식 기준 자료를 유지했습니다. 문서와 계산 결과는 검토용 초안이므로 원자료, 단가 적용 여부와 회계 요건을 담당자가 확인한 뒤 사용하세요.
 
-## 공식 안내
+## GitHub 마켓플레이스
 
-- [ChatGPT 플러그인 설치 및 ZIP 업로드](https://help.openai.com/en/articles/20001256-plugins-in-chatgpt)
-- [GitHub 마켓플레이스 가져오기 및 동기화](https://help.openai.com/en/articles/20001504-importing-and-syncing-plugin-marketplaces-from-github)
-- [플러그인 패키지 및 로컬 마켓플레이스](https://developers.openai.com/plugins/build/plugins)
+워크스페이스 관리자는 [marketplace.json](.agents/plugins/marketplace.json)을 가져와 플러그인을 관리할 수 있습니다. 개인 요금제 사용자의 설치 기능과는 별개이며, 가져오기 후에도 각 워크스페이스의 접근 정책을 설정해야 합니다.
