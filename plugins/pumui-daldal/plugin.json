@@ -1,23 +1,30 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "pumui-daldal",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "교육행정·교육청 업무에 특화한 HWPX 지출품의 초안과 수당·물품·경비 산출물을 준비하고 입력과 결과를 교차 점검합니다.",
   "author": {
     "name": "Daldal"
   },
   "homepage": "https://github.com/yundaldal/gpt-plugins_daldal",
   "repository": "https://github.com/yundaldal/gpt-plugins_daldal",
-  "keywords": ["품의", "교육행정", "문서작성", "예산"],
+  "keywords": [
+    "품의",
+    "교육행정",
+    "문서작성",
+    "예산"
+  ],
   "extensions": {
     "com.openai": {
       "interface": {
-        "displayName": "품의 기안 도우미",
-        "shortDescription": "교육청 특화 품의 초안·산출물 준비",
+        "displayName": "품의 기안 도우미 (교육청·교육행정용)",
+        "shortDescription": "교육청·교육행정용 품의 초안·산출물 준비",
         "longDescription": "교육행정·교육청 업무에 특화해 A1~A4 수당, B1~B2 물품 구입, C1~C3 경비 품의의 입력을 정리하고 HWPX 문서와 계산 결과를 교차 점검하도록 안내합니다.",
         "developerName": "Daldal",
         "category": "Productivity",
-        "capabilities": ["Interactive"],
+        "capabilities": [
+          "Interactive"
+        ],
         "defaultPrompt": "첨부 자료를 분석해 품의 유형과 유형별 기본 산출물 묶음을 스스로 정하고, 산출물 종류를 되묻지 말고 준비해 주세요. 모든 유형에서 실제 HWPX 파일 기안문.hwpx를 필수 산출물로 생성하고 기안문.txt는 미리보기로 함께 제공해 주세요. DOCX를 대체물로 만들거나 확장자만 HWPX로 바꾸지 마세요. 현재 실행 환경에서 실제 HWPX를 만들 수 없으면 DOCX를 내지 말고 HWPX 생성 불가와 본문 미리보기를 안내해 주세요. 먼저 유형과 결과물 목록을 알려 주세요. 유형이 실제로 모호하거나 필수 입력이 빠진 경우에만 필요한 질문을 한 번에 모아 주세요. A유형 단가는 기관·연도 적용을 확인하기 전에 계산하지 말고 결과를 교차 점검해 주세요."
       }
     }

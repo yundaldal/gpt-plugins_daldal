@@ -1,4 +1,4 @@
 interface:
   default_prompt: '"시작" 을 입력하세요'
-  display_name: 품의기안문과 첨부엑셀파일을 생성하는 AI - 달달샘
+  display_name: 품의기안문과 첨부엑셀파일을 생성하는 AI (학교용)
   short_description: 정보만 입력하면 다양한 형태의 품의문과 엑셀폼을 생성합니다.

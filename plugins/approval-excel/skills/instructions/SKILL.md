@@ -1,5 +1,5 @@
 ---
-description: Default instructions for the 품의기안문과 첨부엑셀파일을 생성하는 AI - 달달샘 plugin. Use
+description: Default instructions for the 품의기안문과 첨부엑셀파일을 생성하는 AI (학교용) plugin. Use
   this skill whenever this plugin is invoked.
 name: instructions
 ---
