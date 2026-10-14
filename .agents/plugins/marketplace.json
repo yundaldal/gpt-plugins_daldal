@@ -1,0 +1,20 @@
+{
+  "name": "daldal-pumui-marketplace",
+  "interface": {
+    "displayName": "달달 품의 플러그인"
+  },
+  "plugins": [
+    {
+      "name": "pumui-daldal",
+      "source": {
+        "source": "local",
+        "path": "./plugins/pumui-daldal"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "pumui-daldal",
+  "version": "0.1.0",
+  "description": "대한민국 교육기관의 지출품의 초안과 수당·물품·경비 산출물을 준비하고 입력과 결과를 교차 점검합니다.",
+  "author": {
+    "name": "Daldal"
+  },
+  "homepage": "https://github.com/yundaldal/gpt-plugins_daldal",
+  "repository": "https://github.com/yundaldal/gpt-plugins_daldal",
+  "keywords": ["품의", "교육행정", "문서작성", "예산"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "품의 기안 도우미",
+        "shortDescription": "품의 초안과 산출물 준비",
+        "longDescription": "A1~A4 수당, B1~B2 물품 구입, C1~C3 경비 품의의 입력을 정리하고 문서와 계산 결과를 교차 점검하도록 안내합니다.",
+        "developerName": "Daldal",
+        "category": "Productivity",
+        "capabilities": ["Interactive"],
+        "defaultPrompt": "이 자료로 품의 초안과 산출물을 준비해 주세요. 먼저 유형과 기관·연도별 단가 적용 여부, 빠진 입력을 확인하고 계산과 문서 결과를 교차 점검해 주세요."
+      }
+    }
+  }
+}

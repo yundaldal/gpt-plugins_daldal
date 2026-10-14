@@ -1,0 +1,865 @@
+{
+  "상태값": {
+    "generated": "🛠 생성 예정",
+    "ready": "✅ 사용자 준비 완료",
+    "later": "⏳ 추후 첨부",
+    "na": "➖ 해당 없음",
+    "unresolved": "❓ 확인 필요"
+  },
+  "판별": {
+    "대분류": [
+      {
+        "대분류": "A",
+        "any": [
+          "수당",
+          "강사비",
+          "지급"
+        ]
+      },
+      {
+        "대분류": "B",
+        "any": [
+          "구입",
+          "물품"
+        ]
+      },
+      {
+        "대분류": "C",
+        "any": [
+          "지출",
+          "경비",
+          "협의회비",
+          "운영비",
+          "지원비"
+        ]
+      }
+    ],
+    "세부": [
+      {
+        "type": "A4",
+        "any": [
+          "컨설팅",
+          "위원"
+        ]
+      },
+      {
+        "type": "A3",
+        "any": [
+          "교육 강사"
+        ]
+      },
+      {
+        "type": "A2",
+        "any": [
+          "프로그램"
+        ]
+      },
+      {
+        "type": "A1",
+        "any": [
+          "연수",
+          "강사"
+        ]
+      },
+      {
+        "type": "B2",
+        "any": [
+          "연수"
+        ]
+      },
+      {
+        "type": "B1",
+        "any": [
+          "운영",
+          "물품"
+        ]
+      },
+      {
+        "type": "C1",
+        "any": [
+          "협의회비"
+        ]
+      },
+      {
+        "type": "C2",
+        "any": [
+          "지원비",
+          "동아리"
+        ]
+      },
+      {
+        "type": "C3",
+        "any": [
+          "운영 경비",
+          "경비"
+        ]
+      }
+    ]
+  },
+  "유형": {
+    "A1": {
+      "이름": "연수 강사 수당",
+      "대분류": "A",
+      "제목_접미": "강사 수당 지급",
+      "붙임1_명칭": "지출품의서",
+      "본문_항목": [
+        {
+          "label": "연수 일시",
+          "required": true,
+          "aliases": [
+            "연수기간",
+            "연수 기간",
+            "일시"
+          ]
+        },
+        {
+          "label": "연수 장소",
+          "required": true,
+          "aliases": [
+            "연수장소",
+            "장소"
+          ]
+        },
+        {
+          "label": "연수 대상",
+          "required": true,
+          "aliases": [
+            "연수대상",
+            "대상"
+          ]
+        },
+        {
+          "label": "연수 내용",
+          "required": false,
+          "aliases": [
+            "과정명",
+            "내용"
+          ]
+        },
+        {
+          "label": "지급 대상",
+          "required": true,
+          "aliases": []
+        },
+        {
+          "label": "지급 금액",
+          "required": true,
+          "aliases": [
+            "지급금액"
+          ]
+        }
+      ],
+      "붙임": [
+        {
+          "key": "지출품의서",
+          "name": "지출품의서",
+          "required": true,
+          "source": "user",
+          "default_status": "later",
+          "keywords": [
+            "지출품의서"
+          ]
+        },
+        {
+          "key": "수당지급내역",
+          "name": "{사업명} 강사 수당 지급 내역",
+          "required": true,
+          "source": "generated",
+          "when": "allowance"
+        },
+        {
+          "key": "강사카드",
+          "name": "강사카드",
+          "required": true,
+          "source": "user",
+          "keywords": [
+            "강사카드",
+            "강사 카드"
+          ]
+        },
+        {
+          "key": "강사등록부",
+          "name": "강사등록부",
+          "required": true,
+          "source": "user",
+          "keywords": [
+            "강사등록부",
+            "강사 등록부",
+            "등록부"
+          ]
+        },
+        {
+          "key": "강의원고",
+          "name": "강의원고",
+          "required": true,
+          "source": "user",
+          "keywords": [
+            "강의원고",
+            "강의 원고",
+            "강의안",
+            "원고"
+          ],
+          "비고": "사용자가 업무시스템에 직접 업로드. 기안문 붙임에는 원고명만 기재"
+        },
+        {
+          "key": "통장사본",
+          "name": "강사 통장사본",
+          "required": false,
+          "source": "user_optional",
+          "condition": "강사 계좌 증빙이 필요한 경우",
+          "keywords": [
+            "통장"
+          ]
+        },
+        {
+          "key": "교통비영수증",
+          "name": "강사 교통비 영수증",
+          "required": false,
+          "source": "user_optional",
+          "condition": "교통비를 지급하는 경우",
+          "keywords": [
+            "교통비",
+            "통행",
+            "영수증"
+          ]
+        },
+        {
+          "key": "재직증명서",
+          "name": "재직증명서(강사 1종 근거)",
+          "required": false,
+          "source": "user_optional",
+          "condition": "강사 1종 근거가 필요한 경우",
+          "keywords": [
+            "재직증명"
+          ]
+        }
+      ]
+    },
+    "A2": {
+      "이름": "프로그램 운영 강사 수당(월별·다수 강사)",
+      "대분류": "A",
+      "제목_접미": "강사 수당 지급",
+      "붙임1_명칭": "지출품의서",
+      "붙임1_선택지": [
+        "지출품의서",
+        "일용임금지출품의서"
+      ],
+      "본문_항목": [
+        {
+          "label": "운영 장소",
+          "required": true,
+          "aliases": [
+            "장소"
+          ]
+        },
+        {
+          "label": "운영 대상",
+          "required": true,
+          "aliases": [
+            "대상"
+          ]
+        },
+        {
+          "label": "운영 내용",
+          "required": false,
+          "aliases": [
+            "내용"
+          ]
+        },
+        {
+          "label": "운영 강사",
+          "required": false,
+          "aliases": [
+            "지급 대상"
+          ]
+        },
+        {
+          "label": "지급 금액",
+          "required": true,
+          "aliases": [
+            "지급금액"
+          ]
+        }
+      ],
+      "붙임": [
+        {
+          "key": "지출품의서",
+          "name": "지출품의서",
+          "required": true,
+          "source": "user",
+          "default_status": "later",
+          "keywords": [
+            "지출품의서"
+          ]
+        },
+        {
+          "key": "수당지급내역",
+          "name": "{사업명} 강사 수당 지급 내역",
+          "required": true,
+          "source": "generated",
+          "when": "allowance"
+        },
+        {
+          "key": "강사카드",
+          "name": "강사카드",
+          "required": true,
+          "source": "user",
+          "keywords": [
+            "강사카드",
+            "강사 카드"
+          ]
+        },
+        {
+          "key": "근무상황부",
+          "name": "근무상황부(및 활동일지)",
+          "required": true,
+          "source": "user",
+          "keywords": [
+            "근무상황부",
+            "활동일지",
+            "활동 일지"
+          ]
+        },
+        {
+          "key": "강의원고",
+          "name": "강의 원고",
+          "required": false,
+          "source": "user_optional",
+          "condition": "원고료를 지급하는 경우",
+          "keywords": [
+            "원고",
+            "강의안"
+          ]
+        }
+      ]
+    },
+    "A3": {
+      "이름": "학생 교육 강사 수당",
+      "대분류": "A",
+      "제목_접미": "강사 수당 지급",
+      "붙임1_명칭": "지출품의서",
+      "본문_항목": [
+        {
+          "label": "운영 기간",
+          "required": true,
+          "aliases": [
+            "기간"
+          ]
+        },
+        {
+          "label": "운영 장소",
+          "required": true,
+          "aliases": [
+            "장소"
+          ]
+        },
+        {
+          "label": "운영 대상",
+          "required": true,
+          "aliases": [
+            "대상"
+          ]
+        },
+        {
+          "label": "운영 내용",
+          "required": true,
+          "aliases": [
+            "내용"
+          ]
+        },
+        {
+          "label": "지급 대상",
+          "required": true,
+          "aliases": []
+        },
+        {
+          "label": "지급 금액",
+          "required": true,
+          "aliases": [
+            "지급금액"
+          ]
+        }
+      ],
+      "붙임": [
+        {
+          "key": "지출품의서",
+          "name": "지출품의서",
+          "required": true,
+          "source": "user",
+          "default_status": "later",
+          "keywords": [
+            "지출품의서"
+          ]
+        },
+        {
+          "key": "등록부",
+          "name": "등록부",
+          "required": true,
+          "source": "user",
+          "keywords": [
+            "등록부"
+          ]
+        },
+        {
+          "key": "강사카드",
+          "name": "강사카드",
+          "required": true,
+          "source": "user",
+          "keywords": [
+            "강사카드",
+            "강사 카드"
+          ]
+        },
+        {
+          "key": "결과보고서",
+          "name": "결과 보고서",
+          "required": true,
+          "source": "user",
+          "keywords": [
+            "결과보고서",
+            "결과 보고서"
+          ]
+        },
+        {
+          "key": "수당지급내역",
+          "name": "수당 지급 내역",
+          "required": true,
+          "source": "generated",
+          "when": "allowance"
+        }
+      ]
+    },
+    "A4": {
+      "이름": "컨설팅 위원 수당",
+      "대분류": "A",
+      "제목_접미": "컨설팅 위원수당 지급",
+      "붙임1_명칭": "지출품의서",
+      "본문_항목": [
+        {
+          "label": "기간",
+          "required": true,
+          "aliases": [
+            "일시",
+            "컨설팅 일시"
+          ]
+        },
+        {
+          "label": "대상",
+          "required": false,
+          "aliases": [
+            "장소"
+          ]
+        },
+        {
+          "label": "내용",
+          "required": false,
+          "aliases": []
+        },
+        {
+          "label": "지급 내역",
+          "required": true,
+          "aliases": [
+            "지급 대상"
+          ],
+          "하위": [
+            "지급 대상",
+            "지급 단가",
+            "지급 총액"
+          ]
+        },
+        {
+          "label": "지급 금액",
+          "required": false,
+          "aliases": [
+            "지급 총액",
+            "지급 내역"
+          ],
+          "비고": "본문 구성은 기관의 현재 양식에 맞춰 작성합니다."
+        }
+      ],
+      "붙임": [
+        {
+          "key": "지출품의서",
+          "name": "지출품의서",
+          "required": true,
+          "source": "user",
+          "default_status": "later",
+          "keywords": [
+            "지출품의서"
+          ]
+        },
+        {
+          "key": "수당지급내역",
+          "name": "{사업명} 컨설팅 위원수당 지급 내역",
+          "required": true,
+          "source": "generated",
+          "when": "allowance"
+        },
+        {
+          "key": "컨설팅결과보고서",
+          "name": "컨설팅 결과보고서",
+          "required": true,
+          "source": "user",
+          "keywords": [
+            "결과보고서",
+            "결과 보고서"
+          ]
+        },
+        {
+          "key": "위원카드",
+          "name": "컨설팅 위원카드",
+          "required": false,
+          "source": "user_optional",
+          "condition": "위원카드를 제출하는 경우",
+          "keywords": [
+            "위원카드",
+            "위원 카드"
+          ]
+        }
+      ]
+    },
+    "B1": {
+      "이름": "센터 실 운영 물품(월별)",
+      "대분류": "B",
+      "제목_접미": "물품 구입",
+      "붙임1_명칭": "지출품의서",
+      "본문_항목": [
+        {
+          "label": "운영 장소",
+          "required": true,
+          "aliases": [
+            "장소"
+          ]
+        },
+        {
+          "label": "운영 대상",
+          "required": true,
+          "aliases": [
+            "대상"
+          ]
+        },
+        {
+          "label": "운영 내용",
+          "required": true,
+          "aliases": [
+            "내용"
+          ]
+        },
+        {
+          "label": "품의 내역",
+          "required": true,
+          "aliases": [
+            "구입 내역"
+          ]
+        },
+        {
+          "label": "품의 금액",
+          "required": true,
+          "aliases": [
+            "금액",
+            "소요 금액"
+          ]
+        }
+      ],
+      "붙임": [
+        {
+          "key": "지출품의서",
+          "name": "지출품의서",
+          "required": true,
+          "source": "user",
+          "default_status": "later",
+          "keywords": [
+            "지출품의서"
+          ]
+        },
+        {
+          "key": "물품구입목록",
+          "name": "{사업명} 물품 구입 목록",
+          "required": true,
+          "source": "generated",
+          "when": "purchase"
+        }
+      ]
+    },
+    "B2": {
+      "이름": "연수 운영 물품",
+      "대분류": "B",
+      "제목_접미": "운영 물품 구입",
+      "붙임1_명칭": "지출품의서",
+      "본문_항목": [
+        {
+          "label": "연수 일시",
+          "required": true,
+          "aliases": [
+            "일시"
+          ]
+        },
+        {
+          "label": "연수 장소",
+          "required": true,
+          "aliases": [
+            "장소",
+            "운영 장소"
+          ]
+        },
+        {
+          "label": "연수 대상",
+          "required": false,
+          "aliases": [
+            "운영 대상",
+            "대상"
+          ]
+        },
+        {
+          "label": "구입 내역",
+          "required": true,
+          "aliases": [
+            "품의 내역",
+            "품목",
+            "내용"
+          ]
+        },
+        {
+          "label": "품의 금액",
+          "required": true,
+          "aliases": [
+            "금액",
+            "소요 금액",
+            "소요예산"
+          ]
+        }
+      ],
+      "붙임": [
+        {
+          "key": "지출품의서",
+          "name": "지출품의서",
+          "required": true,
+          "source": "user",
+          "default_status": "later",
+          "keywords": [
+            "지출품의서"
+          ]
+        },
+        {
+          "key": "물품구입목록",
+          "name": "{연수명} 운영 물품 구입 목록",
+          "required": true,
+          "source": "generated",
+          "when": "purchase"
+        },
+        {
+          "key": "현수막사양서",
+          "name": "현수막 제작 사양서",
+          "required": false,
+          "source": "user_optional",
+          "condition": "현수막을 구입하는 경우",
+          "keywords": [
+            "현수막",
+            "사양서"
+          ]
+        }
+      ]
+    },
+    "C1": {
+      "이름": "협의회비(업무추진비)",
+      "대분류": "C",
+      "제목_접미": "협의회비 지출",
+      "붙임1_명칭": "일반지출품의서",
+      "본문_항목": [
+        {
+          "label": "일시",
+          "required": true,
+          "aliases": []
+        },
+        {
+          "label": "장소",
+          "required": true,
+          "aliases": []
+        },
+        {
+          "label": "내용",
+          "required": true,
+          "aliases": []
+        },
+        {
+          "label": "참석대상자",
+          "required": true,
+          "aliases": [
+            "참석 대상자"
+          ]
+        },
+        {
+          "label": "소요금액",
+          "required": true,
+          "aliases": [
+            "소요 금액"
+          ],
+          "하위": [
+            "산출식 예: 업무추진비(음료 등): 10,000원*5명=50,000원"
+          ]
+        }
+      ],
+      "붙임": [
+        {
+          "key": "지출품의서",
+          "name": "일반지출품의서",
+          "required": true,
+          "source": "user",
+          "default_status": "later",
+          "keywords": [
+            "지출품의서"
+          ]
+        }
+      ]
+    },
+    "C2": {
+      "이름": "운영 지원비(동아리 등)",
+      "대분류": "C",
+      "제목_접미": "운영 지원비 지출",
+      "붙임1_명칭": "지출품의서",
+      "본문_항목": [
+        {
+          "label": "사업명",
+          "required": true,
+          "aliases": [
+            "사 업 명"
+          ]
+        },
+        {
+          "label": "운영 기간",
+          "required": true,
+          "aliases": [
+            "기간"
+          ]
+        },
+        {
+          "label": "운영 대상",
+          "required": true,
+          "aliases": [
+            "대상"
+          ]
+        },
+        {
+          "label": "지출 내용",
+          "required": true,
+          "aliases": [
+            "내용"
+          ]
+        },
+        {
+          "label": "지출 금액",
+          "required": true,
+          "aliases": [
+            "금액",
+            "소요 금액"
+          ]
+        }
+      ],
+      "붙임": [
+        {
+          "key": "지출품의서",
+          "name": "지출품의서",
+          "required": true,
+          "source": "user",
+          "default_status": "later",
+          "keywords": [
+            "지출품의서"
+          ]
+        },
+        {
+          "key": "지원내역",
+          "name": "{사업명} 지원 내역",
+          "required": true,
+          "source": "user",
+          "keywords": [
+            "지원 내역",
+            "지원내역"
+          ]
+        },
+        {
+          "key": "통장사본",
+          "name": "운영비 지출 통장 사본",
+          "required": true,
+          "source": "user",
+          "keywords": [
+            "통장"
+          ]
+        },
+        {
+          "key": "협의록",
+          "name": "지원 관련 협의록",
+          "required": true,
+          "source": "user",
+          "keywords": [
+            "협의록"
+          ]
+        }
+      ]
+    },
+    "C3": {
+      "이름": "연수·행사 운영 경비(혼합)",
+      "대분류": "C",
+      "제목_접미": "운영 경비 지출",
+      "붙임1_명칭": "일반지출품의서",
+      "본문_항목": [
+        {
+          "label": "기간",
+          "required": true,
+          "aliases": [
+            "일시"
+          ]
+        },
+        {
+          "label": "장소",
+          "required": true,
+          "aliases": []
+        },
+        {
+          "label": "대상",
+          "required": true,
+          "aliases": []
+        },
+        {
+          "label": "소요 금액",
+          "required": true,
+          "aliases": [
+            "소요금액"
+          ],
+          "하위": [
+            "항목별 1) 항목: 단가 × 인원 × 횟수 = 금액"
+          ]
+        }
+      ],
+      "붙임": [
+        {
+          "key": "지출품의서",
+          "name": "일반지출품의서",
+          "required": true,
+          "source": "user",
+          "default_status": "later",
+          "keywords": [
+            "지출품의서"
+          ]
+        },
+        {
+          "key": "과업내용서",
+          "name": "차량임차 과업내용서",
+          "required": false,
+          "source": "user_optional",
+          "condition": "차량임차 항목이 있는 경우",
+          "keywords": [
+            "과업내용서"
+          ]
+        },
+        {
+          "key": "물품구입목록",
+          "name": "{사업명} 물품 구입 목록",
+          "required": false,
+          "source": "generated",
+          "when": "purchase",
+          "condition": "물품 항목이 포함된 경우"
+        }
+      ]
+    }
+  }
+}
