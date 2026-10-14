@@ -58,7 +58,7 @@ def build_allowance(case, out_path):
         if r > 7:
             _style_row(ws, 7, r, 15)
         vals = [i + 1, p["b_text"], p["org"], p["position"], p["name"], p["account"],
-                p["g_text"], p["h_text"], p["i_text"], p["j_formula"],
+                p["g_text"], p["h_text"], p["i_text"], p["j_value"],
                 p["income_tax"], p["local_tax"], p["deduction"], p["net"], p["note"]]
         for c, v in enumerate(vals, 1):
             ws.cell(r, c).value = v
@@ -72,8 +72,19 @@ def build_allowance(case, out_path):
     ws.row_dimensions[tot].height = 30
     ws.cell(tot, 1).value = "합계"
     ws.merge_cells(start_row=tot, start_column=1, end_row=tot, end_column=9)
+    # Write resolved numbers instead of formula-only totals. openpyxl does not
+    # cache formula results, so formula cells are blank in previews and upload
+    # readers until a spreadsheet application recalculates them.
+    allowance_total = case["computed"].get("allowance") or {}
+    total_values = {
+        "J": allowance_total.get("total", 0),
+        "K": allowance_total.get("income_tax", 0),
+        "L": allowance_total.get("local_tax", 0),
+        "M": allowance_total.get("deduction", 0),
+        "N": allowance_total.get("net", 0),
+    }
     for c, col in zip(range(10, 15), "JKLMN"):
-        ws.cell(tot, c).value = f"=SUM({col}{first}:{col}{last})"
+        ws.cell(tot, c).value = int(total_values[col])
         ws.cell(tot, c).font = Font(name="맑은 고딕", size=11, bold=True)
     ws.cell(tot, 1).font = Font(name="맑은 고딕", size=11, bold=True)
     wb.save(out_path)
@@ -101,7 +112,7 @@ def build_purchase(case, out_path):
         for c in range(ncols):
             ws.cell(r, c + 1)._style = copy.copy(data_style[c])
         for c, v in enumerate([i + 1, it["name"], it.get("spec", ""), it["qty"], it.get("unit", ""),
-                               it["unit_price"], f"=D{r}*F{r}", it.get("note", "")], 1):
+                               it["unit_price"], int(it["qty"]) * int(it["unit_price"]), it.get("note", "")], 1):
             ws.cell(r, c).value = v
         ws.row_dimensions[r].height = data_h
     tot = 4 + len(items)
@@ -110,7 +121,7 @@ def build_purchase(case, out_path):
     ws.row_dimensions[tot].height = tot_h
     ws.cell(tot, 1).value = "합계"
     ws.merge_cells(start_row=tot, start_column=1, end_row=tot, end_column=2)
-    ws.cell(tot, 7).value = f"=SUM(G4:G{tot - 1})"
+    ws.cell(tot, 7).value = sum(int(it["qty"]) * int(it["unit_price"]) for it in items)
     wb.save(out_path)
     return out_path
 

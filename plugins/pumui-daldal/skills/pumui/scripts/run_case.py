@@ -22,7 +22,7 @@ import validate_case  # noqa: E402
 from assemble import fill_draft_amounts  # noqa: E402
 
 OUTPUT_ALLOWLIST = {
-    "기안문.hwpx", "기안문.txt", "수당 지급 내역.xlsx", "물품 구입 목록.xlsx",
+    "기안문.hwpx", "수당 지급 내역.xlsx", "물품 구입 목록.xlsx",
     "예산연결 업로드양식 결과.xlsx", "준비점검표.md", "점검결과.md",
 }
 
@@ -43,12 +43,6 @@ def unique_dir(root, name):
     return path
 
 
-def _write_plain_text(case, path):
-    paragraphs = build_hwpx.render_header(case["draft"])
-    paragraphs.extend(build_hwpx.line_text(level, text) for level, text in build_hwpx.render_lines(case["draft"]))
-    Path(path).write_text("\n".join(paragraphs) + "\n", encoding="utf-8")
-
-
 def main(argv):
     if len(argv) not in (3, 4):
         print("사용법: python run_case.py case.json output_root [input_dir]")
@@ -67,6 +61,10 @@ def main(argv):
         for issue in issues:
             print(f"  {issue['field']}: {issue['message']}")
         return 2
+
+    # Normalize the title before readiness, HWPX creation, and output naming
+    # so every entry point gets the same official [품의] prefix.
+    case["draft"]["title"] = build_hwpx.normalized_title(case["draft"].get("title"))
 
     amount.compute_case(case)
     comp = case["computed"]
@@ -94,7 +92,6 @@ def main(argv):
                 future.result()
                 print(f"[생성] {name}")
 
-        _write_plain_text(case, work / "기안문.txt")
         md, summary = readiness.build_report(case, readiness.list_input_files(input_dir))
         (work / "준비점검표.md").write_text(md, encoding="utf-8")
         print(f"[준비점검표] 필수 본문 누락 {summary['missing_body']}건")

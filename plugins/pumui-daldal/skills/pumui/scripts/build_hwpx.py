@@ -53,9 +53,16 @@ NS_DECL = (
 
 # ---------- 줄 생성 (순수 함수, hwpx_check.py가 재사용) ----------
 
+def normalized_title(title):
+    """Return the official approval title with exactly one [품의] prefix."""
+    title = re.sub(r"^\s*(?:\[품의\]\s*)+", "", str(title or "")).strip()
+    return f"[품의] {title}".rstrip()
+
+
 def render_header(draft):
     """본문 위쪽 머리 줄(기관명·수신·경유·제목)."""
-    return [draft["organization"], "수신  내부결재", "(경유)", f"제목  {draft['title']}"]
+    return [draft["organization"], "수신  내부결재", "(경유)",
+            f"제목  {normalized_title(draft['title'])}"]
 
 
 def render_lines(draft):

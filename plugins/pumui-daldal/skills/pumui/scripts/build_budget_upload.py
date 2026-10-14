@@ -41,12 +41,20 @@ def build(case, out_path):
     school_level = case.get("school_level")
     if not isinstance(school_level, str) or not school_level.strip():
         raise ValueError("예산연결 파일을 만들려면 school_level을 명시해야 합니다.")
+    # Clear every template data-row unit cell, including unused rows that may
+    # carry a sample value. Keep the header D1 unchanged.
+    for r in range(2, ws.max_row + 1):
+        ws[f"D{r}"].value = None
     for i, (name, qty, price) in enumerate(rows):
         r = 2 + i
         if r > 4:  # 양식은 2~4행만 서식이 있어 2행 서식을 이어 쓴다
             for c in range(1, 19):
                 ws.cell(r, c)._style = copy.copy(ws.cell(2, c)._style)
-        for col, v in (("A", i + 1), ("B", name), ("C", qty), ("E", price), ("F", f"=C{r}*E{r}"), ("L", school_level)):
+        # Edufine's upload form expects a numeric amount and an empty 단위
+        # field.  Formula text is not an upload value and may have no cached
+        # result when the workbook is read without recalculation.
+        for col, v in (("A", i + 1), ("B", name), ("C", qty), ("D", None),
+                       ("E", price), ("F", qty * price), ("L", school_level)):
             ws[f"{col}{r}"].value = v
     wb.save(out_path)
     return out_path

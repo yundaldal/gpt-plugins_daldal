@@ -108,6 +108,11 @@ def cell_value(ws, coord, depth=0):
     raise ValueError(f"{coord} 값을 읽을 수 없음: {v!r}")
 
 
+def is_numeric_cell(value):
+    """True only for a stored numeric cell, never for a formula string."""
+    return isinstance(value, (int, float)) and not isinstance(value, bool)
+
+
 def first_amount(text):
     m = re.match(r"\s*([\d,]+)원", text or "")
     if not m:
@@ -293,12 +298,15 @@ def check_allowance_xlsx(case, out_dir):
     ws = openpyxl.load_workbook(path).active
     people = case["allowance"]["people"]
     n = len(people)
-    errs, sums = [], dict.fromkeys("JKLMN", 0)
+    errs, numeric_errs, sums = [], [], dict.fromkeys("JKLMN", 0)
     for i, p in enumerate(people):
         r = 5 + i
         tag = p.get("name", f"{i + 1}번째")
         try:
             g, h, t = (first_amount(ws[f"{c}{r}"].value) for c in "GHI")
+            for col in "JKLMN":
+                if not is_numeric_cell(ws[f"{col}{r}"].value):
+                    numeric_errs.append(f"{col}{r} 숫자 아님: {ws[f'{col}{r}'].value!r}")
             j = cell_value(ws, f"J{r}")
             inc, loc = calc_tax(p.get("income_type"), j, g + h)
             want = {"J": g + h + t, "K": inc, "L": loc, "M": inc + loc, "N": g + h + t - inc - loc}
@@ -312,11 +320,15 @@ def check_allowance_xlsx(case, out_dir):
         except (ValueError, KeyError) as e:
             errs.append(f"{tag}: {e}")
     res.append(("엑셀 J~N(총액·세금·공제·실수령액) 독립 재계산 일치", not errs, " | ".join(errs)))
+    res.append(("수당 개인별 J~N 셀은 계산된 숫자", not numeric_errs,
+                " | ".join(numeric_errs)))
     tot = 5 + n
     last = tot - 1
-    ok = ws[f"A{tot}"].value == "합계" and all(
-        ws[f"{c}{tot}"].value == f"=SUM({c}5:{c}{last})" for c in "JKLMN")
-    res.append(("합계 행(=SUM 범위가 사람 행 전체)", ok, "" if ok else f"{[ws[f'{c}{tot}'].value for c in 'AJKLMN']}"))
+    total_numeric = [c for c in "JKLMN" if not is_numeric_cell(ws[f"{c}{tot}"].value)]
+    ok = ws[f"A{tot}"].value == "합계" and not total_numeric and all(
+        ws[f"{c}{tot}"].value == sums[c] for c in "JKLMN")
+    detail = "" if ok else f"숫자 아님 {total_numeric!r} / 값 {[ws[f'{c}{tot}'].value for c in 'AJKLMN']}"
+    res.append(("합계 행(계산된 숫자)", ok, detail))
     comp = (case.get("computed") or {}).get("allowance")
     if comp:
         diff = [c for c, k in zip("JKLMN", ("total", "income_tax", "local_tax", "deduction", "net")) if sums[c] != comp[k]]
@@ -436,10 +448,11 @@ def check_purchase_xlsx(case, out_dir):
         r = 4 + i
         if (ws[f"B{r}"].value, ws[f"D{r}"].value, ws[f"F{r}"].value) != (it["name"], it["qty"], it["unit_price"]):
             errs.append(f"{r}행 품명·수량·단가")
-        if ws[f"G{r}"].value != f"=D{r}*F{r}":
+        if ws[f"G{r}"].value != int(it["qty"]) * int(it["unit_price"]):
             errs.append(f"{r}행 금액식 {ws[f'G{r}'].value!r}")
     tot = 4 + len(items)
-    sum_ok = ws[f"A{tot}"].value == "합계" and ws[f"G{tot}"].value == f"=SUM(G4:G{tot - 1})"
+    expected_total = sum(int(it["qty"]) * int(it["unit_price"]) for it in items)
+    sum_ok = ws[f"A{tot}"].value == "합계" and ws[f"G{tot}"].value == expected_total
     return [("물품 목록 행(품명·수량·단가·금액식) 일치", not errs, " | ".join(errs)),
             ("물품 목록 합계 행(=SUM 범위)", sum_ok, f"{ws[f'G{tot}'].value!r}")]
 
@@ -477,16 +490,21 @@ def check_budget_upload(case, out_dir):
     total = 0
     for i, (name, qty, price) in enumerate(rows):
         r = 2 + i
-        want = {"A": i + 1, "B": name, "C": qty, "E": price, "F": f"=C{r}*E{r}", "L": case["school_level"]}
+        want = {"A": i + 1, "B": name, "C": qty, "D": None, "E": price,
+                "F": qty * price, "L": case["school_level"]}
         for c in range(1, 19):
             col = openpyxl.utils.get_column_letter(c)
             got = ws.cell(r, c).value
             exp = want.get(col)
             if got != exp:
                 errs.append(f"{col}{r}: {got!r} / 기대 {exp!r}")
-        c_val, e_val = ws[f"C{r}"].value, ws[f"E{r}"].value
+        if ws[f"D{r}"].value not in (None, ""):
+            errs.append(f"D{r}: budget upload unit field must be blank")
+        c_val, e_val, f_val = ws[f"C{r}"].value, ws[f"E{r}"].value, ws[f"F{r}"].value
         if isinstance(c_val, int) and isinstance(e_val, int):
             total += c_val * e_val
+        if f_val != qty * price:
+            errs.append(f"F{r}: expected {qty * price}, got {f_val!r}")
     expected_total = case["computed"]["total"] if case.get("computed", {}).get("total") is not None else None
     if expected_total is not None and total != int(expected_total):
         errs.append(f"수량×단가 합 {total} / 총액 {expected_total}")
