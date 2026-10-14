@@ -1,6 +1,6 @@
 # 품의 기안 도우미
 
-한국 교육기관의 지출품의 초안과 계산 산출물을 준비하는 skills-only 플러그인입니다. A1~A4 수당, B1~B2 물품 구입, C1~C3 경비 흐름을 지원합니다. 외부 앱이나 계정 연결은 필요하지 않습니다.
+교육행정·교육청 업무에 특화해 한국 교육기관의 지출품의 초안과 계산 산출물을 준비하는 skills-only 플러그인입니다. A1~A4 수당, B1~B2 물품 구입, C1~C3 경비 흐름을 지원합니다. 외부 앱이나 계정 연결은 필요하지 않습니다.
 
 포함된 단가표는 2026년 참고 프로필입니다. 기관·회계연도에 적용되는지 사용자가 확인하기 전에는 수당 계산을 진행하지 마세요. 생성 문서는 검토용 초안이며, 회계 분류·규정·결재 요건의 최종 판단을 대신하지 않습니다.
 
@@ -33,7 +33,7 @@ ZIP 업로드만으로 플러그인 안의 Python 스크립트가 자동 실행�
 
 ## 플러그인 ZIP 개별 다운로드
 
-[품의 기안 도우미 ZIP 0.1.4 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/pumui-daldal-0.1.4.zip)
+[품의 기안 도우미 ZIP 0.1.5 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/pumui-daldal-0.1.5.zip)
 
 ZIP 내부 최상위에는 `pumui-daldal/` 폴더가 있습니다. 전체 원본과 테스트 자료는 [저장소의 플러그인 소스](https://github.com/yundaldal/gpt-plugins_daldal/tree/main/plugins/pumui-daldal)에서 확인할 수 있습니다.
 

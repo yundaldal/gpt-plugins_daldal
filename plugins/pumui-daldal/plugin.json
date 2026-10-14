@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "pumui-daldal",
-  "version": "0.1.4",
-  "description": "대한민국 교육기관의 HWPX 지출품의 초안과 수당·물품·경비 산출물을 준비하고 입력과 결과를 교차 점검합니다.",
+  "version": "0.1.5",
+  "description": "교육행정·교육청 업무에 특화한 HWPX 지출품의 초안과 수당·물품·경비 산출물을 준비하고 입력과 결과를 교차 점검합니다.",
   "author": {
     "name": "Daldal"
   },
@@ -13,8 +13,8 @@
     "com.openai": {
       "interface": {
         "displayName": "품의 기안 도우미",
-        "shortDescription": "품의 초안과 산출물 준비",
-        "longDescription": "A1~A4 수당, B1~B2 물품 구입, C1~C3 경비 품의의 입력을 정리하고 문서와 계산 결과를 교차 점검하도록 안내합니다.",
+        "shortDescription": "교육청 특화 품의 초안·산출물 준비",
+        "longDescription": "교육행정·교육청 업무에 특화해 A1~A4 수당, B1~B2 물품 구입, C1~C3 경비 품의의 입력을 정리하고 HWPX 문서와 계산 결과를 교차 점검하도록 안내합니다.",
         "developerName": "Daldal",
         "category": "Productivity",
         "capabilities": ["Interactive"],
