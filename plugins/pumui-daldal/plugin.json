@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "pumui-daldal",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "대한민국 교육기관의 지출품의 초안과 수당·물품·경비 산출물을 준비하고 입력과 결과를 교차 점검합니다.",
   "author": {
     "name": "Daldal"
