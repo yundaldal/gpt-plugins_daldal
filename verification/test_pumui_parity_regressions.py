@@ -120,6 +120,31 @@ def synthetic_a4_committee():
 
 
 class PumuiParityRegressionTests(unittest.TestCase):
+    def test_hwpx_recovery_policy_keeps_hwpx_default_and_requires_txt_consent(self):
+        skill = (ROOT / "plugins" / "pumui-daldal" / "skills" / "pumui" / "SKILL.md").read_text(encoding="utf-8")
+        readme = (ROOT / "plugins" / "pumui-daldal" / "README.md").read_text(encoding="utf-8")
+        manifest = json.loads((ROOT / "plugins" / "pumui-daldal" / "plugin.json").read_text(encoding="utf-8"))
+        prompt = manifest["extensions"]["com.openai"]["interface"]["defaultPrompt"]
+
+        for document in (skill, readme):
+            self.assertIn("기본 산출물", document)
+            self.assertIn("기안문.hwpx", document)
+            self.assertIn("먼저", document)
+            self.assertIn("Python/Data Analysis", document)
+            self.assertIn("셸", document)
+            self.assertIn("공개 플러그인 ZIP", document)
+            self.assertIn("HWPX 파일을 생성하지 못했습니다. 일반 텍스트(.txt) 초안을 만들어도 괜찮을까요?", document)
+            self.assertIn("동의하기 전에는", document)
+            self.assertIn("`.txt` 파일을 만들지", document)
+            self.assertIn("본문 미리보기", document)
+            self.assertIn("미완료", document)
+
+        self.assertEqual(manifest["extensions"]["com.openai"]["interface"]["capabilities"], ["Interactive"])
+        self.assertEqual(manifest["version"], "0.1.10")
+        self.assertIn("기안문.hwpx를 기본으로 먼저 시도", prompt)
+        self.assertIn("일반 텍스트(.txt) 초안을 만들어도 괜찮을까요?", prompt)
+        self.assertIn("명시적으로 동의하기 전에는 .txt를 만들지", prompt)
+
     def test_A4_committee_allowance_validates_without_consulting_only_rules(self):
         case = synthetic_a4_committee()
         issues = validate_case.validate(case)
