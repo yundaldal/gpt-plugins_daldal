@@ -5,7 +5,7 @@
 | 플러그인 | 주요 기능 | 다운로드 | 사용·기능 안내 |
 |---|---|---|---|
 | 관련 공문 정보 추출기 | 기안할 때 관련 공문을 참고해야 할때 에듀파인에서 캡쳐해서 넣어주면 추출해줍니다. | [ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/related-document-extractor.zip) | [플러그인 안내](plugins/related-document-extractor/README.md) |
-| 품의 기안 도우미 (교육청·교육행정용) | 교육행정·교육청 업무에 특화한 HWPX 품의 초안, 수당·물품·경비 계산 산출물 및 교차 점검 | [ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/pumui-daldal-0.1.8.zip) | [사용 안내·원본](plugins/pumui-daldal/) |
+| 품의 기안 도우미 (교육청·교육행정용) | 교육행정·교육청 업무에 특화한 HWPX 품의 초안, 수당·물품·경비 계산 산출물 및 교차 점검 | [ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/pumui-daldal-0.1.9.zip) | [사용 안내·원본](plugins/pumui-daldal/) |
 | 특수교육 개별화교육계획(iep)평가 입력 도우미 | 월별 교육목표·내용·방법·평가계획과 관찰 기록을 바탕으로 특수교육 평가 문장을 간결하고 긍정적인 NEIS 입력 형태로 다듬습니다. | [ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/iep-eval.zip) | [플러그인 안내](plugins/iep-eval/README.md) |
 | 개념기반 교육과정 설계 도우미(핵심개념, 일반화, 탐구질문을 생성) | 수업 주제와 교과·학년 맥락을 바탕으로 핵심개념, 일반화 문장, 사실적·개념적·논쟁적 탐구질문을 연결해 설계합니다. | [ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/ib-core.zip) | [플러그인 안내](plugins/ib-core/README.md) |
 | 품의기안문과 첨부엑셀파일을 생성하는 AI (학교용) | 견적서나 품목 목록을 분석해 학교 품의 문안과 항목·수량·단가·합계를 담은 업로드용 Excel을 작성합니다. 파일 근거와 금액 산식을 대조합니다. | [ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/approval-excel.zip) | [플러그인 안내](plugins/approval-excel/README.md) |

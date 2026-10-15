@@ -37,10 +37,28 @@ DATE_STRICT = re.compile(r"\d{4}\. (?:[1-9]|1[0-2])\. (?:[1-9]|[12]\d|3[01])")
 DATE_WEEKDAY = re.compile(r"(?:(\d{4})\. )?(\d{1,2})\. (\d{1,2})\.(?:\(([^)])\))?")
 ACCOUNT_LIKE = re.compile(r"(?<![\d-])\d{3,6}-\d{2,6}-\d{2,8}(?:-\d{1,4})?(?![\d-])|(?<![\d,.])\d{10,16}(?![\d,])")
 AMOUNT_TEXT = re.compile(r"금([\d,]+)원\(금([가-힣]+)원\)")
+SAFE_IDENTIFIER = re.compile(r"(?:cell:[A-Z]{1,3}\d{1,5}|field:[a-z_][a-z0-9_.\[\]]*)")
+TAX_OTHER_EXEMPTION = 125000
+TAX_OTHER_RATE = Fraction(8, 100)
+TAX_BUSINESS_RATE = Fraction(3, 100)
+TAX_LOCAL_RATE = Fraction(10, 100)
+TAX_FLOOR_UNIT = 10
 
 
 def _norm(s):
     return re.sub(r"\s+", "", s or "")
+
+
+def _ids(*identifiers):
+    """Build a report detail from safe schema paths and spreadsheet cell IDs only."""
+    return "ids:" + " ".join(identifiers)
+
+
+def _safe_report_detail(detail, fallback):
+    identifiers = list(dict.fromkeys(SAFE_IDENTIFIER.findall(detail or "")))
+    if identifiers:
+        return "확인 위치: " + ", ".join(identifiers)
+    return f"확인 위치: {fallback}"
 
 
 # ---------- 독립 계산 (amount.py와 별도 구현) ----------
@@ -65,29 +83,18 @@ def korean_amount(n):
 def floor10(x):
     """10원 미만 절사(Fraction 입력)."""
     x = Fraction(x)
-    return int(x - x % 10)
+    return int(x - x % TAX_FLOOR_UNIT)
 
 
-def calc_tax(income_type, total, base, rates=None):
-    """Independently recalculate from the bundled profile; this is not tax advice."""
-    if rates is None:
-        with open(RATES_PATH, encoding="utf-8") as f:
-            rates = json.load(f)
-    tax = rates["세금"]
-    unit = int(tax.get("절사단위", 10))
-
-    def floor_unit(value):
-        return int(Fraction(value)) // unit * unit
-
+def calc_tax(income_type, total, base):
+    """Recalculate from an independent constant snapshot; verify current policy separately."""
     if income_type == "기타":
-        rule = tax["기타소득"]
-        inc = floor_unit(Fraction(total) * int(rule["세율_퍼센트"]) / 100) if total > int(rule["면제_이하"]) else 0
+        inc = floor10(Fraction(total) * TAX_OTHER_RATE) if total > TAX_OTHER_EXEMPTION else 0
     elif income_type == "사업":
-        rule = tax["사업소득"]
-        inc = floor_unit(Fraction(base) * int(rule["세율_퍼센트"]) / 100)
+        inc = floor10(Fraction(base) * TAX_BUSINESS_RATE)
     else:
-        raise ValueError(f"소득 구분 오류: {income_type!r}")
-    return inc, floor_unit(Fraction(inc) * int(tax["지방소득세"]["세율_퍼센트"]) / 100)
+        raise ValueError("소득 구분 값이 지원되지 않습니다.")
+    return inc, floor10(Fraction(inc) * TAX_LOCAL_RATE)
 
 
 # ---------- 엑셀 읽기 ----------
@@ -121,7 +128,7 @@ def first_amount(text):
 
 
 def total_source(case):
-    """amount.py와 같은 우선순위(수당 > 경비 > 물품)로 총액의 출처."""
+    """총액 출처 우선순위는 수당 > 경비 > 물품이며 C3 물품은 경비 총액에 더하지 않는다."""
     for key in ("allowance", "expense", "purchase"):
         if case.get(key):
             return key
@@ -164,31 +171,31 @@ def check_amounts(case, out_dir, texts):
     res = []
     comp = case.get("computed") or {}
     total = comp.get("total")
-    res.append(("computed.total이 계산돼 있음", total is not None and not comp.get("questions"), ""))
+    res.append(("computed.total이 계산돼 있음", total is not None and not comp.get("questions"), _ids("field:computed.total")))
     if total is None:
         return res
     found = AMOUNT_TEXT.findall("\n".join(texts))
-    bad = [f"{n}원({k})" for n, k in found
+    bad = [i for i, (n, k) in enumerate(found)
            if int(n.replace(",", "")) != total or k != korean_amount(total)]
     if found:
         res.append(("기안문 금액 = computed.total, 한글 금액 일치", not bad,
-                    f"기대 금액{total:,}원({korean_amount(total)}) / 틀린 곳: {bad}" if bad else ""))
+                    _ids(*(f"field:draft.amount[{i}]" for i in bad)) if bad else ""))
     else:
         # 협의회비처럼 총액 문구 없이 산출식 줄만 적는 기안문은 산출식 금액의 합으로 대조한다
         parts = formula_amounts(texts)
         res.append(("기안문에 총액 문구가 없으면 산출식 금액 합 = computed.total",
                     bool(case.get("expense")) and bool(parts) and sum(parts) == total,
-                    f"산출식 금액 {parts} / computed {total}"))
+                    _ids("field:draft.expense.amounts")))
     tl = comp.get("total_line", "")
-    res.append(("computed.total_line 한글 금액 일치", tl == f"금{total:,}원(금{korean_amount(total)}원)", tl))
+    res.append(("computed.total_line 한글 금액 일치", tl == f"금{total:,}원(금{korean_amount(total)}원)", _ids("field:computed.total_line")))
     try:
         totals = independent_totals(case, out_dir)
-    except (OSError, ValueError, KeyError) as e:
-        res.append(("엑셀·입력에서 총액 재계산", False, str(e)))
+    except (OSError, ValueError, KeyError):
+        res.append(("엑셀·입력에서 총액 재계산", False, _ids("field:recalculation")))
         return res
     src = total_source(case)
     res.append(("엑셀(또는 입력) 재계산 합계 = computed.total", totals.get(src) == total,
-                f"재계산 {totals.get(src)} / computed {total}"))
+                _ids(f"field:{src}.total", "field:computed.total")))
     return res
 
 
@@ -212,21 +219,21 @@ def parse_attachments(texts):
 def check_attachments(case, texts, config):
     res = []
     items, start = parse_attachments(texts)
-    res.append(("붙임 줄이 있음", start is not None, ""))
+    res.append(("붙임 줄이 있음", start is not None, _ids("field:draft.attachments")))
     if start is None:
         return res
     nums = [n for n, _ in items]
     consecutive = nums == [None] if len(items) == 1 else nums == list(range(1, len(items) + 1))
-    res.append(("붙임 번호가 1부터 연속", consecutive, f"번호: {nums}"))
-    res.append(("마지막 줄이 '끝.'으로 끝남", texts[-1].rstrip().endswith("끝."), texts[-1][-20:]))
-    res.append(("'끝.'은 마지막 줄에만", sum(t.count("끝.") for t in texts[start:]) == 1, ""))
+    res.append(("붙임 번호가 1부터 연속", consecutive, _ids("field:draft.attachments.numbering")))
+    res.append(("마지막 줄이 '끝.'으로 끝남", texts[-1].rstrip().endswith("끝."), _ids("field:draft.terminator")))
+    res.append(("'끝.'은 마지막 줄에만", sum(t.count("끝.") for t in texts[start:]) == 1, _ids("field:draft.terminator")))
     names = [_norm(name) for _, name in items]
     for att in config["유형"][case["type"]]["붙임"]:
         if not att["required"]:
             continue
         keys = [att["key"]] + att.get("keywords", [])
         hit = any(_norm(k) in n for k in keys for n in names)
-        res.append((f"필수 붙임 포함: {att['key']}", hit, "" if hit else f"찾는 말: {keys}"))
+        res.append((f"필수 붙임 포함: {att['key']}", hit, _ids("field:draft.attachments")))
     return res
 
 
@@ -241,50 +248,51 @@ def check_symbols_dates(case, texts):
     if first is None:
         return res
     errors, top, mark_i = [], 0, 0
-    for t in body[first:]:
+    for line_i, t in enumerate(body[first:], start=first):
         m = re.match(r"(\d+)\. ", t)
         if m:
             top += 1
             mark_i = 0
             if int(m.group(1)) != top:
-                errors.append(f"{t[:12]!r}: {top}. 이어야 함")
+                errors.append(f"field:draft.items[{line_i}]")
             continue
         m = re.match(r"([가-하])\. ", t)
         if m:
             if m.group(1) != MARKS[mark_i]:
-                errors.append(f"{t[:12]!r}: {MARKS[mark_i]}. 이어야 함")
+                errors.append(f"field:draft.items[{line_i}]")
             mark_i += 1
         elif not t.startswith("- "):
-            errors.append(f"기호 없는 줄 {t[:12]!r}")
-    res.append(("항목기호 순서(1. → 가. → -)", not errors, " | ".join(errors)))
+            errors.append(f"field:draft.items[{line_i}]")
+    res.append(("항목기호 순서(1. → 가. → -)", not errors, _ids(*errors) if errors else ""))
 
     bad, in_related = [], False
-    for t in [texts[i] for i in range(len(texts)) if texts[i].startswith("제목")] + body[first:]:
+    date_texts = [t for t in texts if t.startswith("제목")] + body[first:]
+    for text_i, t in enumerate(date_texts):
         is_title = t.startswith("제목")
         t_plain = re.sub(r"^(\d+|[가-하])\. ", "", t)
         if re.match(r"\d+\. ", t):
             in_related = t_plain.startswith("관련")
         for m in DATE_LOOSE.findall(t_plain):
             if not DATE_STRICT.fullmatch(m):
-                bad.append(f"형식 {m!r}")
+                bad.append(f"field:draft.date[{text_i}]")
         year = None
         for m in DATE_WEEKDAY.finditer(t_plain):
             y, mo, d, wd = m.groups()
             year = int(y) if y else year
             if year is None:
-                bad.append(f"연도 불명 {m.group(0)!r}")
+                bad.append(f"field:draft.date[{text_i}]")
                 continue
             try:
                 real = WEEK[date(year, int(mo), int(d)).weekday()]
             except ValueError:
-                bad.append(f"없는 날짜 {year}. {mo}. {d}.")
+                bad.append(f"field:draft.date[{text_i}]")
                 continue
             if wd is None:
                 if not (in_related or is_title):
-                    bad.append(f"요일 없음 {m.group(0)!r}")
+                    bad.append(f"field:draft.date[{text_i}]")
             elif wd != real:
-                bad.append(f"요일 틀림 {year}. {mo}. {d}.({wd}) -> {real}")
-    res.append(("날짜 형식 'YYYY. M. D.(요일)'과 요일 정확성", not bad, " | ".join(bad)))
+                bad.append(f"field:draft.date[{text_i}]")
+    res.append(("날짜 형식 'YYYY. M. D.(요일)'과 요일 정확성", not bad, _ids(*bad) if bad else ""))
     return res
 
 
@@ -294,45 +302,45 @@ def check_allowance_xlsx(case, out_dir):
     res = []
     path = os.path.join(out_dir, XLSX_NAMES["allowance"])
     if not os.path.exists(path):
-        return [("수당 지급 내역.xlsx 존재", False, path)]
+        return [("수당 지급 내역.xlsx 존재", False, _ids("field:allowance.workbook"))]
     ws = openpyxl.load_workbook(path).active
     people = case["allowance"]["people"]
     n = len(people)
     errs, numeric_errs, sums = [], [], dict.fromkeys("JKLMN", 0)
     for i, p in enumerate(people):
         r = 5 + i
-        tag = p.get("name", f"{i + 1}번째")
         try:
             g, h, t = (first_amount(ws[f"{c}{r}"].value) for c in "GHI")
             for col in "JKLMN":
                 if not is_numeric_cell(ws[f"{col}{r}"].value):
-                    numeric_errs.append(f"{col}{r} 숫자 아님: {ws[f'{col}{r}'].value!r}")
+                    numeric_errs.append(f"cell:{col}{r}")
             j = cell_value(ws, f"J{r}")
             inc, loc = calc_tax(p.get("income_type"), j, g + h)
             want = {"J": g + h + t, "K": inc, "L": loc, "M": inc + loc, "N": g + h + t - inc - loc}
             if ws[f"E{r}"].value != p.get("name"):
-                errs.append(f"{tag}: 성명 칸 {ws[f'E{r}'].value!r}")
+                errs.append(f"cell:E{r}")
             for col, w in want.items():
                 got = cell_value(ws, f"{col}{r}")
                 sums[col] += got
                 if got != w:
-                    errs.append(f"{tag} {col}{r}: 기대 {w:,} / 실제 {got:,}")
-        except (ValueError, KeyError) as e:
-            errs.append(f"{tag}: {e}")
-    res.append(("엑셀 J~N(총액·세금·공제·실수령액) 독립 재계산 일치", not errs, " | ".join(errs)))
+                    errs.append(f"cell:{col}{r}")
+        except (ValueError, KeyError):
+            errs.append(f"field:allowance.people[{i}]")
+    res.append(("엑셀 J~N(총액·세금·공제·실수령액) 독립 재계산 일치", not errs, _ids(*errs)))
     res.append(("수당 개인별 J~N 셀은 계산된 숫자", not numeric_errs,
-                " | ".join(numeric_errs)))
+                _ids(*numeric_errs)))
     tot = 5 + n
     last = tot - 1
     total_numeric = [c for c in "JKLMN" if not is_numeric_cell(ws[f"{c}{tot}"].value)]
     ok = ws[f"A{tot}"].value == "합계" and not total_numeric and all(
         ws[f"{c}{tot}"].value == sums[c] for c in "JKLMN")
-    detail = "" if ok else f"숫자 아님 {total_numeric!r} / 값 {[ws[f'{c}{tot}'].value for c in 'AJKLMN']}"
+    detail = "" if ok else _ids(*(f"cell:{c}{tot}" for c in set(total_numeric) | {c for c in "JKLMN" if ws[f"{c}{tot}"].value != sums[c]}))
     res.append(("합계 행(계산된 숫자)", ok, detail))
     comp = (case.get("computed") or {}).get("allowance")
     if comp:
         diff = [c for c, k in zip("JKLMN", ("total", "income_tax", "local_tax", "deduction", "net")) if sums[c] != comp[k]]
-        res.append(("엑셀 열 합계 = computed.allowance", not diff, f"다른 열: {diff}" if diff else ""))
+        res.append(("엑셀 열 합계 = computed.allowance", not diff,
+                    _ids(*(f"cell:{c}{tot}" for c in diff)) if diff else ""))
     return res
 
 
@@ -419,7 +427,7 @@ def check_allowance_rates(case, out_dir):
     kind = case["allowance"].get("kind", "instructor")
     errs = []
     for i, p in enumerate(case["allowance"]["people"]):
-        r, tag = 5 + i, p.get("name", f"{i + 1}번째")
+        r = 5 + i
         try:
             if kind == "instructor":
                 g, h = expected_instructor_pay(p, rates), expected_manuscript_pay(p, rates)
@@ -428,33 +436,33 @@ def check_allowance_rates(case, out_dir):
             travel = int((p.get("travel") or {}).get("amount") or 0)
             got_g, got_h = first_amount(ws[f"G{r}"].value), first_amount(ws[f"H{r}"].value)
             got_j = cell_value(ws, f"J{r}")
-        except (ValueError, KeyError, TypeError) as e:
-            errs.append(f"{tag}: 재계산 불가 {e}")
+        except (ValueError, KeyError, TypeError):
+            errs.append(f"field:allowance.people[{i}]")
             continue
         for col, want, got in (("G", g, got_g), ("H", h, got_h), ("J", g + h + travel, got_j)):
             if want != got:
-                errs.append(f"{tag} {col}{r}: 단가 기준 {want:,} / 엑셀 {got:,}")
-    return [("엑셀 G·H·J를 단가표로 독립 재계산한 금액과 일치", not errs, " | ".join(errs))]
+                errs.append(f"cell:{col}{r}")
+    return [("엑셀 G·H·J를 단가표로 독립 재계산한 금액과 일치", not errs, _ids(*errs))]
 
 
 def check_purchase_xlsx(case, out_dir):
     path = os.path.join(out_dir, XLSX_NAMES["purchase"])
     if not os.path.exists(path):
-        return [("물품 구입 목록.xlsx 존재", False, path)]
+        return [("물품 구입 목록.xlsx 존재", False, _ids("field:purchase.workbook"))]
     ws = openpyxl.load_workbook(path).active
     items = case["purchase"]["items"]
     errs = []
     for i, it in enumerate(items):
         r = 4 + i
         if (ws[f"B{r}"].value, ws[f"D{r}"].value, ws[f"F{r}"].value) != (it["name"], it["qty"], it["unit_price"]):
-            errs.append(f"{r}행 품명·수량·단가")
+            errs.extend(f"cell:{col}{r}" for col in "BDF")
         if ws[f"G{r}"].value != int(it["qty"]) * int(it["unit_price"]):
-            errs.append(f"{r}행 금액식 {ws[f'G{r}'].value!r}")
+            errs.append(f"cell:G{r}")
     tot = 4 + len(items)
     expected_total = sum(int(it["qty"]) * int(it["unit_price"]) for it in items)
     sum_ok = ws[f"A{tot}"].value == "합계" and ws[f"G{tot}"].value == expected_total
-    return [("물품 목록 행(품명·수량·단가·금액식) 일치", not errs, " | ".join(errs)),
-            ("물품 목록 합계 행(=SUM 범위)", sum_ok, f"{ws[f'G{tot}'].value!r}")]
+    return [("물품 목록 행(품명·수량·단가·금액식) 일치", not errs, _ids(*errs)),
+            ("물품 목록 합계 행(숫자 합계)", sum_ok, _ids(f"cell:G{tot}"))]
 
 
 def expected_budget_rows(case):
@@ -474,19 +482,19 @@ def check_budget_upload(case, out_dir):
     path = os.path.join(out_dir, BUDGET_NAME)
     has_budget_type = bool(case.get("purchase") or case.get("expense"))
     if not has_budget_type:
-        return [("예산연결 업로드 파일 없음(수당 유형)", not os.path.exists(path), path)]
+        return [("예산연결 업로드 파일 없음(수당 유형)", not os.path.exists(path), _ids("field:budget_upload"))]
     if not os.path.exists(path):
-        return [("예산연결 업로드 파일 존재", False, path)]
+        return [("예산연결 업로드 파일 존재", False, _ids("field:budget_upload.workbook"))]
     ws = openpyxl.load_workbook(path).active
     form = openpyxl.load_workbook(BUDGET_FORM).active
     rows = expected_budget_rows(case)
     n = len(rows)
     errs = []
     if [c.value for c in ws[1][:18]] != [c.value for c in form[1][:18]]:
-        errs.append("머리글이 양식과 다름")
+        errs.append("field:budget_upload.headers")
     data_rows = [r for r in range(2, ws.max_row + 1) if any(ws.cell(r, c).value is not None for c in range(1, 19))]
     if data_rows != list(range(2, 2 + n)):
-        errs.append(f"데이터 행 {len(data_rows)}개 / 기대 {n}개")
+        errs.append("field:budget_upload.rows")
     total = 0
     for i, (name, qty, price) in enumerate(rows):
         r = 2 + i
@@ -497,24 +505,24 @@ def check_budget_upload(case, out_dir):
             got = ws.cell(r, c).value
             exp = want.get(col)
             if got != exp:
-                errs.append(f"{col}{r}: {got!r} / 기대 {exp!r}")
+                errs.append(f"cell:{col}{r}")
         if ws[f"D{r}"].value not in (None, ""):
-            errs.append(f"D{r}: budget upload unit field must be blank")
+            errs.append(f"cell:D{r}")
         c_val, e_val, f_val = ws[f"C{r}"].value, ws[f"E{r}"].value, ws[f"F{r}"].value
         if isinstance(c_val, int) and isinstance(e_val, int):
             total += c_val * e_val
         if f_val != qty * price:
-            errs.append(f"F{r}: expected {qty * price}, got {f_val!r}")
+            errs.append(f"cell:F{r}")
     expected_total = case["computed"]["total"] if case.get("computed", {}).get("total") is not None else None
     if expected_total is not None and total != int(expected_total):
-        errs.append(f"수량×단가 합 {total} / 총액 {expected_total}")
-    return [("예산연결 업로드 파일(머리글·행·값·금액식·학교급·합계)", not errs, " | ".join(errs[:6]))]
+        errs.extend(["field:computed.total"] + [f"cell:F{r}" for r in range(2, 2 + n)])
+    return [("예산연결 업로드 파일(머리글·행·값·금액식·학교급·합계)", not errs, _ids(*errs))]
 
 
 def check_expense(case, texts):
     """기안문의 '단가*수량=금액' 줄 산술 + 경비 입력 줄 금액."""
     res, bad = [], []
-    for t in texts:
+    for text_i, t in enumerate(texts):
         if "=" not in t or not re.search(r"[*×]", t):
             continue
         left, right = t.rsplit("=", 1)
@@ -530,16 +538,16 @@ def check_expense(case, texts):
                 break
             prod *= int(fm.group(1).replace(",", ""))
         if prod != int(m.group(1).replace(",", "")):
-            bad.append(t[:30])
-    res.append(("기안문 산출식(단가×수량=금액) 산술", not bad, " | ".join(bad)))
+            bad.append(f"field:draft.items[{text_i}]")
+    res.append(("기안문 산출식(단가×수량=금액) 산술", not bad, _ids(*bad)))
     errs = []
-    for ln in case["expense"]["lines"]:
+    for i, ln in enumerate(case["expense"]["lines"]):
         amt = int(ln["unit_price"])
         for f in ln.get("factors") or []:
             amt *= int(f)
         if ln.get("amount") not in (None, "") and int(ln["amount"]) != amt:
-            errs.append(f"{ln['label']}: 입력 {ln['amount']} / 산출 {amt}")
-    res.append(("경비 입력 금액 = 단가×수량", not errs, " | ".join(errs)))
+            errs.append(f"field:expense.lines[{i}].amount")
+    res.append(("경비 입력 금액 = 단가×수량", not errs, _ids(*errs)))
     return res
 
 
@@ -583,16 +591,56 @@ def check_privacy(case, out_dir):
 
 def check_manuscript(case, out_dir, texts):
     files = [f for f in os.listdir(out_dir) if re.search(r"원고|강의안", f)]
-    res = [("원고 파일을 만들지 않음(붙임에 이름만)", not files, f"발견: {files}" if files else "")]
+    res = [("원고 파일을 만들지 않음(붙임에 이름만)", not files, _ids("field:attachments.manuscript"))]
     people = (case.get("allowance") or {}).get("people") or []
     uses = any((p.get("manuscript") or {}).get("kind", "none") != "none" for p in people)
     if uses:
         items, _ = parse_attachments(texts)
-        res.append(("원고료 지급 시 붙임에 원고명이 있음", any(re.search("원고|강의안", n) for _, n in items), ""))
+        res.append(("원고료 지급 시 붙임에 원고명이 있음", any(re.search("원고|강의안", n) for _, n in items),
+                    _ids("field:draft.attachments")))
     return res
 
 
 # ---------- 점검 7: HWPX ----------
+
+def _hwpx_check_field(name):
+    """Map checker labels to fixed schema paths; never echo labels from subprocess output."""
+    normalized = (name or "").casefold()
+    if "render_lines" in normalized:
+        return "field:hwpx.render_text"
+    if "mimetype" in normalized:
+        return "field:hwpx.mimetype"
+    if "xml" in normalized or "charpr" in normalized or "parapr" in normalized or "style" in normalized:
+        return "field:hwpx.structure"
+    if ("\ub4e4\uc5ec\uc4f0\uae30" in normalized
+            or "\ub0b4\uc5b4\uc4f0\uae30" in normalized
+            or "\uc904\ubc14\uafb8" in normalized):
+        return "field:hwpx.paragraph_layout"
+    if "\uacf5\ubc31" in normalized:
+        return "field:hwpx.spacing"
+    if "12pt" in normalized or "\uae00\uc790 \ud06c\uae30" in normalized:
+        return "field:hwpx.font_size"
+    if "\uae00\uaf34" in normalized:
+        return "field:hwpx.font"
+    return "field:hwpx.structure"
+
+
+def _hwpx_failure_ids(stdout):
+    """Keep fixed check IDs and checker-generated line numbers only."""
+    failure_marker = "[\uC2E4\uD328]"
+    safe_detail = re.compile(r"(?:line:\d+|paragraph-count)(?:, (?:line:\d+|paragraph-count))*")
+    identifiers = []
+    for line in (stdout or "").splitlines():
+        if not line.startswith(failure_marker):
+            continue
+        tail = line[len(failure_marker):].strip()
+        check_name, separator, detail = tail.partition(" - ")
+        field = _hwpx_check_field(check_name.strip())
+        identifiers.append(field)
+        if separator and field in ("field:hwpx.paragraph_layout", "field:hwpx.render_text") and safe_detail.fullmatch(detail):
+            identifiers.extend(f"field:hwpx.line[{number}]" for number in re.findall(r"line:(\d+)", detail))
+    return _ids(*dict.fromkeys(("field:hwpx.structure", *identifiers)))
+
 
 def check_hwpx(case, hwpx_path):
     with tempfile.TemporaryDirectory() as tmp:
@@ -601,9 +649,8 @@ def check_hwpx(case, hwpx_path):
             json.dump(case, f, ensure_ascii=False)
         proc = subprocess.run([sys.executable, "-X", "utf8", "-I", os.path.join(BASE_DIR, "hwpx_check.py"),
                                hwpx_path, case_path], capture_output=True, text=True, encoding="utf-8")
-    failed = [l for l in proc.stdout.splitlines() if l.startswith("[실패]")]
-    return [("HWPX 구조·본문·서식(hwpx_check.py)", proc.returncode == 0,
-             " | ".join(failed) or proc.stderr.strip()[-200:])]
+    detail = _hwpx_failure_ids(proc.stdout) if proc.returncode else _ids("field:hwpx.structure")
+    return [("HWPX 구조·본문·서식(hwpx_check.py)", proc.returncode == 0, detail)]
 
 
 # ---------- 전체 ----------
@@ -615,15 +662,15 @@ def run_checks(case, out_dir):
     res = []
     hwpx = os.path.join(out_dir, HWPX_NAME)
     if not os.path.exists(hwpx):
-        return [("기안문.hwpx 존재", False, hwpx)]
+        return [("기안문.hwpx 존재", False, _ids("field:hwpx.file"))]
     with zipfile.ZipFile(hwpx) as zf:
         texts = [p.lstrip() for p in extract_paragraphs(zf) if p.strip()]  # 줄 앞 들여쓰기 공백은 hwpx_check가 점검
 
     def guarded(name, fn):
         try:
             res.extend(fn())
-        except Exception as e:  # 한 점검의 오류가 나머지 점검을 막지 않게 실패로 기록
-            res.append((name, False, f"점검 중 오류: {type(e).__name__}: {e}"))
+        except Exception:  # 사용자 값이나 로컬 경로를 보고서에 남기지 않는다.
+            res.append((name, False, _ids("field:check.execution")))
 
     guarded("(1) 금액", lambda: check_amounts(case, out_dir, texts))
     guarded("(2) 붙임", lambda: check_attachments(case, texts, config))
@@ -649,7 +696,8 @@ def write_report(case, results, path):
              "- 이 점검은 '자동 점검 통과'일 뿐, 서류가 다 갖춰진 '제출 준비 완료'와는 다릅니다(준비점검표 확인).", "",
              "| 결과 | 항목 | 상세 |", "|---|---|---|"]
     for name, ok, _detail in results:
-        lines.append(f"| {'통과' if ok else '**실패**'} | {name} | {'자동 점검' if ok else '자세한 내용은 입력값을 확인한 뒤 다시 실행하세요.'} |")
+        detail = "자동 점검" if ok else _safe_report_detail(_detail, name)
+        lines.append(f"| {'통과' if ok else '**실패**'} | {name} | {detail} |")
     with open(path, "w", encoding="utf-8") as f:
         f.write("\n".join(lines) + "\n")
     return failed
@@ -663,8 +711,9 @@ def main(argv):
         case = json.load(f)
     results = run_checks(case, argv[2])
     failed = write_report(case, results, os.path.join(argv[2], "점검결과.md"))
-    for name, ok, _detail in results:
-        print(f"[{'통과' if ok else '실패'}] {name}")
+    for name, ok, detail in results:
+        message = "" if ok else f" — {_safe_report_detail(detail, name)}"
+        print(f"[{'통과' if ok else '실패'}] {name}{message}")
     print(f"\n통과 {len(results) - len(failed)} / 실패 {len(failed)}")
     return 1 if failed else 0
 

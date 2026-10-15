@@ -125,6 +125,30 @@ def body_status(spec_item, items, computed_total):
     return False, "내용 비어 있음"
 
 
+INPUT_FILE_TYPES = {
+    ".docx": "DOCX",
+    ".xlsx": "XLSX",
+    ".pdf": "PDF",
+    ".hwpx": "HWPX",
+    ".hwp": "HWP",
+    ".txt": "TXT",
+    ".csv": "CSV",
+    ".png": "PNG",
+    ".jpg": "JPG",
+    ".jpeg": "JPG",
+}
+
+
+def _summarize_input_types(files):
+    """Return only a count by known file type; never echo user-supplied names."""
+    counts = {}
+    for file in files:
+        extension = os.path.splitext(str(file))[1].lower()
+        kind = INPUT_FILE_TYPES.get(extension, "OTHER")
+        counts[kind] = counts.get(kind, 0) + 1
+    return ", ".join(f"{kind}: {count}" for kind, count in counts.items()) or "none"
+
+
 def build_report(case, files, config=None):
     """(markdown 문자열, 요약 dict)."""
     config = config or load_config()
@@ -147,10 +171,16 @@ def build_report(case, files, config=None):
             missing += 1
         mark = "✅ 채움" if ok else ("⬜ 비어 있음" if sp["required"] else "➖ 선택(비어 있음)")
         body_rows.append(f"| {sp['label']} | {'필수' if sp['required'] else '선택'} | {mark} | {note} |")
-    rel = [r for r in draft.get("related") or [] if r.get("doc_no") and r.get("date")]
-    if not rel:
+    related_value = draft.get("related")
+    rel = [r for r in related_value or [] if r.get("doc_no") and r.get("date")]
+    if rel:
+        related_status = f"✅ {len(rel)}건"
+    elif isinstance(related_value, list):
+        related_status = "➖ 해당 없음"
+    else:
         missing += 1
-    body_rows.append(f"| 관련 문서 | 필수 | {'✅ ' + str(len(rel)) + '건' if rel else '⬜ 비어 있음'} | 번호·날짜는 사용자 입력 |")
+        related_status = "⬜ 비어 있음"
+    body_rows.append(f"| 관련 문서 | 필수 | {related_status} | 번호·날짜는 사용자 입력 |")
     purpose_ok = bool(draft.get("purpose"))
     if not purpose_ok:
         missing += 1
@@ -165,7 +195,7 @@ def build_report(case, files, config=None):
         f"# 준비점검표 - {draft.get('title', case.get('case_id', ''))}",
         "",
         f"- 세부유형: {case['type']} {spec['이름']}",
-        f"- input 파일 {len(files)}건: " + (", ".join(files) if files else "(없음)"),
+        f"- input files: {len(files)} (" + _summarize_input_types(files) + ")",
         "",
         "## 붙임 서류",
         "",

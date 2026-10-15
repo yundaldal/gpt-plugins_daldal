@@ -34,6 +34,11 @@ def _t_text(t):
     return out
 
 
+def _line_diff_ids(expected, actual):
+    """Return stable line numbers without copying expected or actual text."""
+    return [f"line:{i + 1}" for i, (want, got) in enumerate(zip(expected, actual)) if want != got]
+
+
 def check_formatting(zf, draft, texts_paras, results):
     """본문 줄의 문단 모양(왼쪽 여백·내어쓰기)과 글꼴(굴림체)·크기(12pt) 검사."""
     ns = {"hh": "http://www.hancom.co.kr/hwpml/2011/head", "hc": "http://www.hancom.co.kr/hwpml/2011/core",
@@ -55,17 +60,15 @@ def check_formatting(zf, draft, texts_paras, results):
     title_idx = max(i for i, a in enumerate(allp) if a[2] == render_header(draft)[-1])
     body = allp[title_idx + 2:]  # 제목 뒤 빈 줄 1개 건너뜀
     lines = render_lines(draft)
-    bad = []
-    for (level, text), (pid, _, actual) in zip(lines, body):
-        want = (0, 0) if level == BLANK else LEVELS[level][1:]
-        if margins.get(pid) != want:
-            bad.append(f"{text[:15]!r}: 기대 {level}{want} / 실제 {margins.get(pid)}")
+    expected_margins = [(0, 0) if level == BLANK else LEVELS[level][1:] for level, _ in lines]
+    actual_margins = [margins.get(pid) for pid, _, _ in body]
+    bad = _line_diff_ids(expected_margins, actual_margins)
     # 에듀파인 붙여넣기에서 탭·특수 빈칸은 깨지므로 간격은 일반 공백만 허용
     special = sorted({e.tag.split("}")[1] for e in sec.iter() if e.tag in SPACE_TAGS})
     results.append(("간격은 일반 공백만(탭·특수 빈칸 없음)", not special, f"발견: {special}" if special else ""))
     blank_ok = [line_text(level, t) for level, t in lines] == [a[2] for a in body]
     results.append(("빈 줄 위치(1. 묶음 뒤·붙임 앞)·줄 수·줄 앞 공백 일치", blank_ok, ""))
-    results.append(("단계별 왼쪽 여백·내어쓰기 일치", not bad and len(lines) == len(body), " | ".join(bad)))
+    results.append(("단계별 왼쪽 여백·내어쓰기 일치", not bad and len(lines) == len(body), ", ".join(bad)))
 
     # 글꼴: 모든 fontface의 font 이름 / 본문 charPr 높이
     faces = {f.get("face") for f in head.iterfind(".//hh:font", ns)}
@@ -130,11 +133,10 @@ def main():
         same = texts == expected
         detail = ""
         if not same:
-            diff = [f"{i + 1}줄: 기대 {e!r} / 실제 {a!r}"
-                    for i, (e, a) in enumerate(zip(expected, texts)) if e != a]
+            diff = _line_diff_ids(expected, texts)
             if len(expected) != len(texts):
-                diff.append(f"줄 수 다름: 기대 {len(expected)} / 실제 {len(texts)}")
-            detail = " | ".join(diff)
+                diff.append("paragraph-count")
+            detail = ", ".join(diff)
         results.append(("render_lines와 줄 단위 일치", same, detail))
         with zipfile.ZipFile(path) as zf:
             check_formatting(zf, draft, paras, results)

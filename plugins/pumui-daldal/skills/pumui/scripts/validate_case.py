@@ -98,8 +98,8 @@ def validate(case):
         add("department", "부서명을 입력해 주세요.")
 
     related = draft.get("related")
-    if not isinstance(related, list) or not related:
-        add("draft.related", "관련 문서가 있으면 번호·날짜·제목을 입력해 주세요. 없으면 ‘관련 문서 없음’을 확인해 주세요.")
+    if not isinstance(related, list):
+        add("draft.related", "관련 문서 목록을 입력해 주세요. 해당 문서가 없으면 빈 목록 []으로 표시해 주세요.")
     else:
         for i, item in enumerate(related):
             prefix = f"draft.related[{i}]"
@@ -126,7 +126,10 @@ def validate(case):
 
     sections = [key for key in ("allowance", "purchase", "expense") if case.get(key) is not None]
     expected = "allowance" if code.startswith("A") else "purchase" if code.startswith("B") else "expense"
-    if sections != [expected]:
+    if code == "C3":
+        if sections not in (["expense"], ["purchase", "expense"]):
+            add("allowance/purchase/expense", "C3 유형은 경비 자료가 필요하며 물품 목록은 선택 항목입니다.")
+    elif sections != [expected]:
         add("allowance/purchase/expense", f"{code} 유형은 {expected} 자료만 허용합니다. 여러 종류를 합산하지 마세요.")
 
     if expected in ("purchase", "expense") and not _is_text(case.get("school_level")):
@@ -136,9 +139,12 @@ def validate(case):
         allowance = case.get("allowance")
         if not isinstance(allowance, dict):
             allowance = {}
-        want_kind = "consulting" if code == "A4" else "instructor"
-        if allowance.get("kind") != want_kind:
-            add("allowance.kind", f"{code} 유형의 수당 종류는 {want_kind}이어야 합니다.")
+        configured_kind = allowance.get("kind")
+        allowed_kinds = ("consulting", "committee") if code == "A4" else ("instructor",)
+        if configured_kind not in allowed_kinds:
+            expected_kinds = "컨설팅 또는 위원회" if code == "A4" else "강사"
+            add("allowance.kind", f"{code} 유형은 {expected_kinds} 수당 종류를 선택해 주세요.")
+        want_kind = configured_kind if configured_kind in allowed_kinds else allowed_kinds[0]
         people = allowance.get("people")
         if not isinstance(people, list) or not people:
             add("allowance.people", "지급 대상자 한 명 이상을 입력해 주세요.")
@@ -160,7 +166,7 @@ def validate(case):
             for j, session in enumerate(sessions):
                 sp = f"{prefix}.sessions[{j}]"
                 if not isinstance(session, dict):
-                    add(sp, "일정 항목은 객체여야 합니다.")
+                    add(sp, "회기 항목은 객체여야 합니다.")
                     continue
                 if not _valid_date(session.get("date")):
                     add(f"{sp}.date", "유효한 날짜(YYYY-MM-DD)를 입력해 주세요.")
@@ -176,7 +182,7 @@ def validate(case):
                     if not _finite_number(h) or float(h) <= 0:
                         add(f"{sp}.recognized_hours", "강의 인정시간을 양수로 입력해 주세요.")
                 elif not (start and end):
-                    add(sp, "컨설팅·회의는 시작 시각과 종료 시각이 필요합니다.")
+                    add(sp, "회기 날짜와 시작·종료 시각을 입력해 주세요.")
             travel = person.get("travel")
             if not isinstance(travel, dict) or not _money(travel.get("amount")):
                 add(f"{prefix}.travel.amount", "교통비 금액을 명시해 주세요. 지급하지 않으면 0을 입력합니다.")
@@ -197,13 +203,13 @@ def validate(case):
             if person.get("category") == "그룹":
                 if not _positive_int(person.get("group_size")):
                     add(f"{prefix}.group_size", "그룹 강사 참여 인원은 양의 정수여야 합니다.")
-            if person.get("category") not in (None, ""):
+            if person.get("category") not in (None, "") and want_kind != "committee":
                 rates = _load_rates()
                 valid_categories = set(rates["강사수당"]) | {"그룹"} if want_kind == "instructor" else {
                     key for key, value in rates["컨설팅"].items() if isinstance(value, dict)
                 }
                 if person.get("category") not in valid_categories:
-                    add(f"{prefix}.category", "수당 구분을 제공된 기준 목록에서 선택해 주세요.")
+                    add(f"{prefix}.category", "분류는 제공된 기준 단가 묶음 목록에서 선택해 주세요.")
 
         draft_org = draft.get("organization")
         confirmation = case.get("rate_confirmation")
@@ -217,7 +223,7 @@ def validate(case):
             if not _is_text(draft_org) or confirmation.get("organization") != draft_org:
                 add("rate_confirmation.organization", "단가 적용 기관이 기안문 기관명과 같은지 확인해 주세요.")
 
-    if expected == "purchase":
+    if expected == "purchase" or (code == "C3" and case.get("purchase") is not None):
         purchase = case.get("purchase")
         if not isinstance(purchase, dict):
             add("purchase", "물품 자료는 객체여야 합니다.")
@@ -270,6 +276,33 @@ def validate(case):
                         quantity = math.prod(factors) if factors else 1
                         if int(line["amount"]) != quantity * int(line["unit_price"]):
                             add(f"{prefix}.amount", "입력 금액과 단가×수량 계산값이 다릅니다.")
+
+    if code == "C3" and isinstance(case.get("purchase"), dict) and isinstance(case.get("expense"), dict):
+        purchase_items = case["purchase"].get("items")
+        expense_lines = case["expense"].get("lines")
+        if isinstance(purchase_items, list) and purchase_items and isinstance(expense_lines, list) and expense_lines:
+            purchase_values = [
+                item for item in purchase_items
+                if isinstance(item, dict) and _positive_int(item.get("qty")) and _money(item.get("unit_price"))
+            ]
+            expense_values = [
+                line for line in expense_lines
+                if isinstance(line, dict)
+                and _money(line.get("unit_price"))
+                and isinstance(line.get("factors") or [], list)
+                and all(_positive_int(factor) for factor in (line.get("factors") or []))
+            ]
+            if len(purchase_values) == len(purchase_items) and len(expense_values) == len(expense_lines):
+                purchase_total = sum(int(item["qty"]) * int(item["unit_price"]) for item in purchase_values)
+                expense_total = sum(
+                    int(line["unit_price"]) * math.prod(line.get("factors") or [1])
+                    for line in expense_values
+                )
+                if purchase_total != expense_total:
+                    add(
+                        "purchase.total",
+                        "C3의 예산연결 행은 물품 목록을 사용하므로 물품 목록 합계와 경비 총액이 다릅니다. 예산연결에 반영할 범위와 두 합계를 확인해 주세요.",
+                    )
 
     try:
         spec = _load_config()["유형"][code]

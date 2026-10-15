@@ -108,8 +108,11 @@ def main(argv):
         for name in present:
             shutil.copy2(work / name, destination / name)
 
+    if failed:
+        print(f"[점검 실패] 자동 점검 {len(failed)}건이 통과하지 못했습니다. 결과 폴더: {destination.name} (case.json은 저장하지 않았습니다.)")
+        return 1
     print(f"[완료] 결과 폴더: {destination.name} (case.json은 저장하지 않았습니다.)")
-    return 1 if failed else 0
+    return 0
 
 
 if __name__ == "__main__":
