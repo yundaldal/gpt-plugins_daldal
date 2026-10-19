@@ -23,7 +23,7 @@
 <tr>
 <td rowspan="1">관련문서 양식을 캡처만 하면</td>
 <td>관련 공문 정보 추출기</td>
-<td>기안할 때 캡처하면 공문에 적어 넣을 관련 공문 형식으로 추출해서 작성합니다.</td>
+<td>기안할 때 문서리스트의 해당 정보칸을 캡처해서 업로드하면 공문에 적어 넣을 관련 공문 형식으로 추출해서 작성합니다.</td>
 <td>미확인</td>
 <td><a href="https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/related-document-extractor.zip">ZIP 다운로드</a></td>
 <td><a href="plugins/related-document-extractor/README.md">플러그인 안내</a></td>
