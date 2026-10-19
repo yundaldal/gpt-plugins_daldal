@@ -21,10 +21,10 @@
         "displayName": "품의기안문과 첨부엑셀파일을 생성하는 AI (학교용)",
         "logo": "./assets/gpt-icon.png",
         "longDescription": "정보만 입력하면 다양한 형태의 품의문과 엑셀폼을 생성합니다.",
-        "shortDescription": "정보만 입력하면 다양한 형태의 품의문과 엑셀폼을 생성합니다."
+        "shortDescription": "학교 품의문과 첨부 엑셀 작성"
       }
     }
   },
   "name": "gpt-2078f8322c523f06ce162e2074e6fdae",
-  "version": "0.14.1+bundle.7989701c85ce7ed0c432483cfbc4f979"
+  "version": "0.14.2"
 }

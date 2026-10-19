@@ -30,3 +30,7 @@
 - [이 플러그인 ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/approval-excel.zip)
 - [저장소 소스](./)
 - [Skills 지침](skills/instructions/SKILL.md)
+
+## 대화 진행 방식
+
+유형 선택 → 입력 방법 안내 → 자료·금액 확인 → 품의문·엑셀 생성 → 수정. 분석 결과를 확인받은 뒤 파일을 만듭니다.

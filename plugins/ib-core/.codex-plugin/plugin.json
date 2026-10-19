@@ -18,9 +18,9 @@
     "displayName": "개념기반 교육과정 설계 도우미(핵심개념, 일반화, 탐구질문을 생성) - 달달샘",
     "logo": "./assets/gpt-icon.png",
     "longDescription": "키워드, 인물, 사건에서 현대적으로 의미 있는 핵심개념과 일반화 문장, 탐구질문을 추출합니다.",
-    "shortDescription": "키워드, 인물, 사건에서 현대적으로 의미 있는 핵심개념과 일반화 문장, 탐구질문을 추출합니다."
+    "shortDescription": "핵심개념·일반화·탐구질문 설계"
   },
   "name": "gpt-873735b205262e25a3d59729f212e30f",
   "skills": "./skills/",
-  "version": "0.10.1+bundle.e7fc4bedba9535b5695216590a124d3d"
+  "version": "0.10.2"
 }

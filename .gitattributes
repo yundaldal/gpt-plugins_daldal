@@ -1,0 +1,8 @@
+# Keep the released plugin bytes identical to their ZIP entries on every OS.
+plugins/approval-excel/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+plugins/canva-game/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+plugins/ib-core/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+plugins/ib-planner/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+plugins/iep-eval/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+plugins/iep-plan/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+plugins/related-document-extractor/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

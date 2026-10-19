@@ -1,0 +1,6 @@
+{
+  "name": "daldal-plugin-verification",
+  "private": true,
+  "scripts": { "test": "node flow-harness.cjs" },
+  "devDependencies": { "yaml": "2.8.1" }
+}

@@ -21,10 +21,10 @@
         "displayName": "특수교육 개별화교육계획(iep)평가 입력 도우미_달달샘",
         "logo": "./assets/gpt-icon.png",
         "longDescription": "평가내용을 솔직편하게 적고, 긍정적이고 나이스 입력 가능 스타일로 바꿔주라고 하세요",
-        "shortDescription": "평가내용을 솔직편하게 적고, 긍정적이고 나이스 입력 가능 스타일로 바꿔주라고 하세요"
+        "shortDescription": "관찰 기록을 바탕으로 IEP 평가 작성"
       }
     }
   },
   "name": "gpt-8f59e45caa9ee9b09efe337fbbe41c7a",
-  "version": "0.11.1+bundle.35697fe122892b4ba2f51023f149264b"
+  "version": "0.11.2"
 }

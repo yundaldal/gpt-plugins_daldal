@@ -30,3 +30,7 @@
 - [이 플러그인 ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/iep-eval.zip)
 - [저장소 소스](./)
 - [Skills 지침](skills/instructions/SKILL.md)
+
+## 대화 진행 방식
+
+문서·평가월 확인 → 교육내용 제시 → 항목별 관찰 입력과 평가문 확인 → 전체 검토. 현재 항목을 확인한 뒤 다음 항목으로 이동합니다.

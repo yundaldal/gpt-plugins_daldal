@@ -30,3 +30,7 @@
 - [이 플러그인 ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/ib-planner.zip)
 - [저장소 소스](./)
 - [Skills 지침](skills/instructions/SKILL.md)
+
+## 대화 진행 방식
+
+기본 정보 → 핵심 개념 → 개념적 렌즈 → 스트렌드 → 프로젝트 개요·이름 → 차시별 계획. 각 선택을 확인하며, 참고자료가 없으면 필요한 자료나 자료 없이 진행할지 확인합니다.

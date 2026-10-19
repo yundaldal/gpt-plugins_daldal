@@ -2,18 +2,78 @@
 
 교육·업무용 플러그인을 모아 공유하는 저장소입니다. 기존 플러그인과 공개용으로 점검한 플러그인 6종을 제공합니다.
 
-| 플러그인 | 주요 기능 | 다운로드 | 사용·기능 안내 |
-|---|---|---|---|
-| 관련 공문 정보 추출기 | 기안할 때 관련 공문을 참고해야 할때 에듀파인에서 캡쳐해서 넣어주면 추출해줍니다. | [ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/related-document-extractor.zip) | [플러그인 안내](plugins/related-document-extractor/README.md) |
-| 품의 기안 도우미 (교육청·교육행정용) | 교육행정·교육청 업무에 특화한 HWPX 품의 초안, 수당·물품·경비 계산 산출물 및 교차 점검 | [ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/pumui-daldal-0.1.10.zip) | [사용 안내·원본](plugins/pumui-daldal/) |
-| 특수교육 개별화교육계획(iep)평가 입력 도우미 | 월별 교육목표·내용·방법·평가계획과 관찰 기록을 바탕으로 특수교육 평가 문장을 간결하고 긍정적인 NEIS 입력 형태로 다듬습니다. | [ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/iep-eval.zip) | [플러그인 안내](plugins/iep-eval/README.md) |
-| 개념기반 교육과정 설계 도우미(핵심개념, 일반화, 탐구질문을 생성) | 수업 주제와 교과·학년 맥락을 바탕으로 핵심개념, 일반화 문장, 사실적·개념적·논쟁적 탐구질문을 연결해 설계합니다. | [ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/ib-core.zip) | [플러그인 안내](plugins/ib-core/README.md) |
-| 품의기안문과 첨부엑셀파일을 생성하는 AI (학교용) | 견적서나 품목 목록을 분석해 학교 품의 문안과 항목·수량·단가·합계를 담은 업로드용 Excel을 작성합니다. 파일 근거와 금액 산식을 대조합니다. | [ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/approval-excel.zip) | [플러그인 안내](plugins/approval-excel/README.md) |
-| 개념기반 교육과정 설계 디자이너 챗봇 (Feat. 에듀테크)- 다양한 학습자용 | 교육과정·학년·교과 맥락을 순서대로 확인한 뒤 개념 기반 단원 요소와 차시별 지도안을 설계합니다. 학생의 다양한 학습 요구에 맞는 수업 지원도 연결합니다. | [ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/ib-planner.zip) | [플러그인 안내](plugins/ib-planner/README.md) |
-| 캔바 AI 코드 생성 프롬프트 생성기 | 수업 아이디어를 Canva AI 또는 Canva Code에 넣을 한국어 학습 게임 제작 프롬프트로 바꿉니다. 상호작용, 화면 흐름, 접근성, 반응형 동작과 오류 회복을 구체화합니다. | [ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/canva-game.zip) | [플러그인 안내](plugins/canva-game/README.md) |
-| 특수교육 개별화교육계획(IEP)설계 도우미_성취기준도 연결 | 학생의 현재 수준과 지원 요구를 바탕으로 개별화교육계획을 단계적으로 설계하고, 포함된 특수교육 교육과정 기준표에서 실제 분류번호와 문구를 확인해 연결합니다. | [ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/iep-plan.zip) | [플러그인 안내](plugins/iep-plan/README.md) |
+<table>
+<thead><tr><th>사용 상황</th><th>플러그인</th><th>주요 기능</th><th>GPTs 누적 이용횟수</th><th>다운로드</th><th>사용·기능 안내</th></tr></thead>
+<tbody>
+<tr>
+<td rowspan="2">품의할 때</td>
+<td>품의 기안 도우미 (교육청·교육행정용)</td>
+<td>교육행정·교육청 업무에 특화한 HWPX 품의 초안, 수당·물품·경비 계산 산출물 및 교차 점검</td>
+<td>해당 없음</td>
+<td><a href="https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/pumui-daldal-0.1.10.zip">ZIP 다운로드</a></td>
+<td><a href="plugins/pumui-daldal/">사용 안내·원본</a></td>
+</tr>
+<tr>
+<td>품의기안문과 첨부엑셀파일을 생성하는 AI (학교용)</td>
+<td>견적서나 품목 목록을 분석해 학교 품의 문안과 항목·수량·단가·합계를 담은 업로드용 Excel을 작성합니다. 파일 근거와 금액 산식을 대조합니다.</td>
+<td>700회+</td>
+<td><a href="https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/approval-excel.zip">ZIP 다운로드</a></td>
+<td><a href="plugins/approval-excel/README.md">플러그인 안내</a></td>
+</tr>
+<tr>
+<td rowspan="1">관련문서 양식을 캡처만 하면</td>
+<td>관련 공문 정보 추출기</td>
+<td>기안할 때 관련 공문을 참고해야 할때 에듀파인에서 캡쳐해서 넣어주면 추출해줍니다.</td>
+<td>미확인</td>
+<td><a href="https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/related-document-extractor.zip">ZIP 다운로드</a></td>
+<td><a href="plugins/related-document-extractor/README.md">플러그인 안내</a></td>
+</tr>
+<tr>
+<td rowspan="2">개별화교육계획·평가를 작성할 때</td>
+<td>특수교육 개별화교육계획(IEP)설계 도우미_성취기준도 연결</td>
+<td>학생의 현재 수준과 지원 요구를 바탕으로 개별화교육계획을 단계적으로 설계하고, 포함된 특수교육 교육과정 기준표에서 실제 분류번호와 문구를 확인해 연결합니다.</td>
+<td>1,000회+</td>
+<td><a href="https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/iep-plan.zip">ZIP 다운로드</a></td>
+<td><a href="plugins/iep-plan/README.md">플러그인 안내</a></td>
+</tr>
+<tr>
+<td>특수교육 개별화교육계획(iep)평가 입력 도우미</td>
+<td>월별 교육목표·내용·방법·평가계획과 관찰 기록을 바탕으로 특수교육 평가 문장을 간결하고 긍정적인 NEIS 입력 형태로 다듬습니다.</td>
+<td>1,000회+</td>
+<td><a href="https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/iep-eval.zip">ZIP 다운로드</a></td>
+<td><a href="plugins/iep-eval/README.md">플러그인 안내</a></td>
+</tr>
+<tr>
+<td rowspan="2">개념기반 수업을 설계할 때</td>
+<td>개념기반 교육과정 설계 도우미(핵심개념, 일반화, 탐구질문을 생성)</td>
+<td>수업 주제와 교과·학년 맥락을 바탕으로 핵심개념, 일반화 문장, 사실적·개념적·논쟁적 탐구질문을 연결해 설계합니다.</td>
+<td>1,000회+</td>
+<td><a href="https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/ib-core.zip">ZIP 다운로드</a></td>
+<td><a href="plugins/ib-core/README.md">플러그인 안내</a></td>
+</tr>
+<tr>
+<td>개념기반 교육과정 설계 디자이너 챗봇 (Feat. 에듀테크)- 다양한 학습자용</td>
+<td>교육과정·학년·교과 맥락을 순서대로 확인한 뒤 개념 기반 단원 요소와 차시별 지도안을 설계합니다. 학생의 다양한 학습 요구에 맞는 수업 지원도 연결합니다.</td>
+<td>700회+</td>
+<td><a href="https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/ib-planner.zip">ZIP 다운로드</a></td>
+<td><a href="plugins/ib-planner/README.md">플러그인 안내</a></td>
+</tr>
+<tr>
+<td rowspan="1">학습 게임을 만들 때</td>
+<td>캔바 AI 코드 생성 프롬프트 생성기</td>
+<td>수업 아이디어를 Canva AI 또는 Canva Code에 넣을 한국어 학습 게임 제작 프롬프트로 바꿉니다. 상호작용, 화면 흐름, 접근성, 반응형 동작과 오류 회복을 구체화합니다.</td>
+<td>400회+</td>
+<td><a href="https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/canva-game.zip">ZIP 다운로드</a></td>
+<td><a href="plugins/canva-game/README.md">플러그인 안내</a></td>
+</tr>
+</tbody>
+</table>
+
+GPTs 누적 이용횟수는 제작자의 이전 기록 기준이며 집계일은 미상입니다. 현재 플러그인 다운로드 수와는 다릅니다. 별도 제작한 교육청·교육행정용 품의 도우미는 해당 없음, 기록을 확보하지 못한 관련 공문 추출기는 미확인으로 표시합니다. [수치 출처와 흐름 점검 기록](FLOW_AUDIT.md)을 참고하세요.
 
 ## 설치 안내
+
+사용 전에 [플러그인별 업로드 요청과 사용자 입력 흐름](FLOW_MAPS.md)을 확인할 수 있습니다.
 
 [무료·유료 계정별 설치 조건, ZIP 업로드, GitHub 마켓플레이스 가져오기](INSTALLATION.md)를 확인하세요. GitHub에서 ZIP을 내려받는 것만으로 ChatGPT에 자동 설치되지는 않습니다.
 

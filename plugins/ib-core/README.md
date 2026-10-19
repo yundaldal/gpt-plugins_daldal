@@ -30,3 +30,7 @@
 - [이 플러그인 ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/ib-core.zip)
 - [저장소 소스](./)
 - [Skills 지침](skills/instructions/SKILL.md)
+
+## 대화 진행 방식
+
+수업 맥락 확인 → 핵심 개념 선택 → 일반화 선택 → 탐구 질문 검토. 선택을 기다리고 이전 선택을 수정하면 관련 결과도 다시 검토합니다.

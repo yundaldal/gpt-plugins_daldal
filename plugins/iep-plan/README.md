@@ -30,3 +30,7 @@
 - [이 플러그인 ZIP 다운로드](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/iep-plan.zip)
 - [저장소 소스](./)
 - [Skills 지침](skills/instructions/SKILL.md)
+
+## 대화 진행 방식
+
+이전학기 자료 업로드 여부 → 기본 정보 → 현재수준 → 학기 목표 → 월별 계획 → 최종 검토. 업로드 없이도 시작할 수 있고 각 결과를 확인한 뒤 다음 단계로 진행합니다.
