@@ -1,5 +1,6 @@
 """Run the complete local pipeline without saving the submitted case JSON."""
 import json
+import hashlib
 import os
 import re
 import shutil
@@ -17,6 +18,7 @@ import build_budget_upload  # noqa: E402
 import build_hwpx  # noqa: E402
 import build_xlsx  # noqa: E402
 import harness  # noqa: E402
+import document_adapter  # noqa: E402
 import readiness  # noqa: E402
 import validate_case  # noqa: E402
 import questions  # noqa: E402
@@ -44,37 +46,137 @@ def unique_dir(root, name):
     return path
 
 
+def compute_revision(case_path, input_dir=None):
+    digest = hashlib.sha256()
+    case_path = Path(case_path).resolve(strict=True)
+    case_bytes = case_path.read_bytes()
+    digest.update(b"case\0")
+    case_identity = str(case_path).casefold().encode("utf-8")
+    digest.update(len(case_identity).to_bytes(8, "big"))
+    digest.update(case_identity)
+    digest.update(len(case_bytes).to_bytes(8, "big"))
+    digest.update(case_bytes)
+    if input_dir:
+        input_root = Path(input_dir)
+        if not input_root.is_dir():
+            raise ValueError("input_dir must be an existing directory")
+        digest.update(b"input\0")
+        for path in sorted(input_root.rglob("*"), key=lambda item: item.relative_to(input_root).as_posix()):
+            if path.is_file():
+                relative = path.relative_to(input_root).as_posix().encode("utf-8")
+                contents = path.read_bytes()
+                digest.update(len(relative).to_bytes(8, "big"))
+                digest.update(relative)
+                digest.update(len(contents).to_bytes(8, "big"))
+                digest.update(contents)
+    return digest.hexdigest()
+
+
+def _inspected_input(value, input_dir):
+    if not isinstance(value, str) or not value.strip() or input_dir is None:
+        return False
+    candidate = Path(value.strip())
+    if candidate.is_absolute():
+        return False
+    try:
+        root = Path(input_dir).resolve(strict=True)
+        path = (root / candidate).resolve(strict=True)
+        path.relative_to(root)
+        if not path.is_file():
+            return False
+        inspected = document_adapter.inspect(path)
+    except (OSError, RuntimeError, ValueError):
+        return False
+    return inspected.get("status") == "ok" and bool(inspected.get("blocks"))
+
+
+def validate_resolution_actions(state, input_dir=None):
+    """Require concrete, inspected input files for add/replace/review branches."""
+    if not isinstance(state, dict) or not isinstance(state.get("questions"), dict):
+        return ["question states are missing"]
+    errors = []
+    required_file_actions = {
+        ("intake.readiness", "add"),
+        ("source.unreadable", "replace"),
+        ("rate.confirm", "review"),
+    }
+    for question_id, entry in state["questions"].items():
+        if not isinstance(question_id, str) or not isinstance(entry, dict):
+            continue
+        answer = entry.get("answer")
+        if not isinstance(answer, dict) or answer.get("mode") != "option":
+            continue
+        action = (question_id.split("::", 1)[0], answer.get("value"))
+        if action in required_file_actions and entry.get("status") in {"answered", "deferred"}:
+            if not _inspected_input(answer.get("custom_value"), input_dir):
+                errors.append(f"{question_id} action requires a readable file inside input_dir")
+    return errors
+
+
 def main(argv):
     state_only = len(argv) == 5 and argv[3] == "--question-state"
     state_with_input = len(argv) == 6 and argv[4] == "--question-state"
-    if len(argv) not in (3, 4, 5, 6) or (len(argv) == 5 and not state_only) or (len(argv) == 6 and not state_with_input):
+    if not state_only and not state_with_input:
         print("사용법: python run_case.py case.json output_root [input_dir] [--question-state state.json]")
         return 2
     case_path, output_root = Path(argv[1]), Path(argv[2])
     input_dir = argv[3] if len(argv) in (4, 6) and not state_only else None
     state_path = Path(argv[4] if state_only else argv[5]) if state_only or state_with_input else None
-    if state_path:
-        try:
-            state = json.loads(state_path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError):
-            print("[중단] question-state JSON을 읽을 수 없습니다.")
-            return 2
-        errors = questions.validate_state(state)
-        if errors:
-            print("[중단] 질문 응답 상태를 확인해 주세요.")
-            for error in errors:
-                print(f"  {error}")
-            return 2
-        pending = questions.pending_required(state.get("required_question_ids", []), state)
-        if pending:
-            print("[중단] 필수 확인 질문에 답해 주세요.")
-            for qid in pending:
-                print(f"  {qid}")
-            return 2
     try:
         case = json.loads(case_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
         print("[오류] case.json을 읽을 수 없거나 JSON 형식이 아닙니다.")
+        return 2
+    try:
+        current_revision = compute_revision(case_path, input_dir)
+    except (OSError, ValueError):
+        print("[중단] 입력 자료를 읽거나 revision을 계산할 수 없습니다.")
+        return 2
+
+    try:
+        state = json.loads(state_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        print("[중단] question-state JSON을 읽을 수 없습니다.")
+        return 2
+    errors = questions.validate_state(state)
+    if errors:
+        print("[중단] 질문 응답 상태를 확인해 주세요.")
+        for error in errors:
+            print(f"  {error}")
+        return 2
+    expected_ids = [q["id"] for q in questions.required_questions(state.get("context", {}))]
+    if set(expected_ids) != set(state.get("required_question_ids", [])):
+        print("[중단] 질문 상태의 적용 대상이 현재 intake 사실과 일치하지 않습니다.")
+        return 2
+    if state.get("source_revision") != current_revision:
+        state = questions.refresh_for_revision(state, current_revision)
+        stale_ids = [
+            qid for qid in state.get("required_question_ids", [])
+            if isinstance(state.get("questions", {}).get(qid), dict)
+            and state["questions"][qid].get("status") == "stale"
+        ]
+        print("[중단] 자료 또는 case가 바뀌어 확인 답변을 다시 받아야 합니다.")
+        for qid in stale_ids:
+            print(f"  {qid}")
+        return 2
+    binding_errors = questions.validate_case_bindings(case, state)
+    if binding_errors:
+        print("[중단] 확인 질문의 필드 연결을 현재 case와 대조해 주세요.")
+        for error in binding_errors:
+            print(f"  {error}")
+        return 2
+    action_errors = validate_resolution_actions(state, input_dir)
+    if action_errors:
+        print("[중단] 선택한 자료 조치의 입력 파일을 확인해 주세요.")
+        for error in action_errors:
+            print(f"  {error}")
+        return 2
+    state = questions.refresh_for_revision(state, current_revision)
+    pending = questions.pending_required(state.get("required_question_ids", []), state)
+    if pending:
+        print("[중단] 필수 확인 질문에 답해 주세요.")
+        for qid in pending:
+            print(f"  {qid}")
         return 2
 
     issues = validate_case.validate(case)

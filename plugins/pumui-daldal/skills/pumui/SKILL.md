@@ -55,7 +55,7 @@ description: 교육행정·교육청 업무에 특화한 한국 교육기관의 
 Python 3.10 이상과 `requirements.txt`의 패키지가 설치된 환경에서 플러그인 폴더 기준으로 실행합니다.
 
 ```text
-python skills/pumui/scripts/run_case.py <비공개폴더>/case.json <비공개폴더>/결과 [<비공개폴더>/input]
+python skills/pumui/scripts/run_case.py <비공개폴더>/case.json <비공개폴더>/결과 [<비공개폴더>/input] --question-state <비공개폴더>/question-state.json
 ```
 
 실제 인명·소속·계좌 정보가 포함될 수 있으므로 `case.json`, 원본 입력 문서, 결과 파일을 공개 저장소나 테스트 산출물에 넣지 않습니다. 실행기는 `case.json`을 결과 폴더로 복사하지 않지만, 사용자가 지정한 원본 입력 파일은 별도로 남습니다. 결과 폴더와 엑셀도 민감한 자료로 취급합니다.
@@ -79,7 +79,47 @@ python skills/pumui/scripts/run_case.py <비공개폴더>/case.json <비공개�
 
 ## 상황별 확인 질문 규칙
 
-- 질문은 자료의 유형, 읽기 상태, 누락 정보, 충돌 여부에 따라 필요한 경우에만 제시합니다. 참고 사진은 A4 컨설팅에서 관찰된 질문 프로세스의 사례이며, 문구나 순서를 모든 유형에 복사하지 않습니다.
+- 질문은 자료의 유형, 읽기 상태, 누락 정보, 충돌 여부에 따라 필요한 경우에만 제시합니다. 참고 사진은 실제 Claude Code 실행에서 질문을 제시한 사례입니다. 그 문구나 순서를 특정 품의 유형에 고정하거나 모든 건에 복사하지 않고, 현재 건에서 확인할 항목에 맞춰 묻습니다.
 - 모든 확인 질문은 `resources/questions.json`의 질문 ID와 연결하고, 객관식 선택지와 명시적인 `직접 입력` 선택지를 함께 제시합니다. 자동으로 추가되는 `Other`만으로는 질문을 완료한 것으로 처리하지 않습니다.
+- `직접 입력`은 객관식 보기 중 하나로 제시합니다. 선택한 뒤 응답 상태에는 `{"mode":"option","value":"custom","custom_value":"사용자가 입력한 값"}` 형태로 기록합니다. `mode:"custom"`만 적어 객관식 보기를 건너뛴 답변은 받지 않습니다.
 - 응답은 `pending`, `answered`, `deferred`, `not_applicable`, `stale` 상태로 기록합니다. 이미 `answered`인 질문은 같은 근거가 유지되는 동안 다시 묻지 않으며, 자료가 바뀌어 영향을 받는 질문만 `stale`로 표시해 다시 확인합니다.
 - 필수 질문이 `pending`, `deferred`, `stale`이면 산출물 생성을 중단합니다. 직접 입력도 `validate_case.py`를 통과한 값이어야 합니다.
+- 생성 전 `run_case.py`에 `--question-state <state.json>`을 반드시 전달합니다. 질문이 필요 없는 건도 `required_question_ids: []`인 상태 파일을 만듭니다. 상태 파일이 없거나 필수 질문이 `answered` 또는 허용된 `not_applicable`이 아니면 생성하지 않습니다. 자료 revision이 바뀌면 기존 답변을 `stale`로 바꾸고 다시 확인합니다.
+- `add`, `replace`, `review`, `amount`, `edit`, `choose`처럼 후속 입력이 필요한 선택지는 `custom_value`를 기록한 뒤에만 완료로 처리합니다.
+
+### 질문 상태 파일 예시
+
+`context.question_instances`는 배열 순서로 `person[i]` 또는 `session[i]` ID를 만듭니다. `field_path`는 점으로 속성을 잇고 `[i]`로 배열 인덱스를 표시하는 JSON 경로입니다. 반복 질문의 답변에는 같은 대상과 값을 가리키는 `binding`을 둡니다. `field.confirm` 세션에는 안정된 `source_id`와 `source_revision`도 필요하며, revision은 상태 파일의 `source_revision`과 같아야 합니다.
+
+```json
+{
+  "source_revision": "REVISION_SHA256",
+  "context": {
+    "travel_unspecified": true,
+    "question_instances": {
+      "travel.present": {
+        "person": [
+          {"index": 0, "field_path": "allowance.people[0].travel.amount", "value": 0}
+        ]
+      }
+    }
+  },
+  "required_question_ids": ["travel.present::person[0]"],
+  "questions": {
+    "travel.present::person[0]": {
+      "status": "answered",
+      "answer": {
+        "mode": "option",
+        "value": "none",
+        "binding": {"index": 0, "field_path": "allowance.people[0].travel.amount", "value": 0}
+      }
+    }
+  }
+}
+```
+
+`field.confirm::session[i]` 답변은 대상 `field_path`가 현재 case에서 해석되어야 합니다. `accept`는 추출값이 대상 필드와 같아야 하고, `edit`는 `custom_value`가 대상 필드의 최종 값과 같아야 합니다. `travel.present`에서 `none`은 0원에만 유효하고, `amount`의 숫자 입력은 연결된 case 금액과 같아야 합니다.
+- `type.confirm`의 추천 유형은 `context.recommended_type` 및 case의 `type`과 같아야 합니다. 직접 선택한 유형도 `custom_value`와 case의 `type`이 같아야 합니다. `source.conflict::session[i]`는 안정된 source ID·revision과 대상 필드 경로를 묶고, 최종 case 값이 답변의 선택값과 같아야 합니다.
+- `attachment.include`의 `use`는 case의 현재 `draft.attachments` 목록을 사용합니다. `edit`와 `custom`은 `custom_value`에 case의 붙임 목록과 같은 JSON 배열을 넣어야 합니다.
+- `context` facts and `required_question_ids` must match. The script checks IDs, bindings, and the case/input revision; the intake workflow supplies semantic facts such as source conflicts.
+- HWPX recovery is a post-failure interaction. The pre-generation question catalog does not offer a preview choice for a build that has not failed yet.
