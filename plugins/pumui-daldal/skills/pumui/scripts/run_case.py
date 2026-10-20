@@ -19,6 +19,7 @@ import build_xlsx  # noqa: E402
 import harness  # noqa: E402
 import readiness  # noqa: E402
 import validate_case  # noqa: E402
+import questions  # noqa: E402
 from assemble import fill_draft_amounts  # noqa: E402
 
 OUTPUT_ALLOWLIST = {
@@ -44,11 +45,32 @@ def unique_dir(root, name):
 
 
 def main(argv):
-    if len(argv) not in (3, 4):
-        print("사용법: python run_case.py case.json output_root [input_dir]")
+    state_only = len(argv) == 5 and argv[3] == "--question-state"
+    state_with_input = len(argv) == 6 and argv[4] == "--question-state"
+    if len(argv) not in (3, 4, 5, 6) or (len(argv) == 5 and not state_only) or (len(argv) == 6 and not state_with_input):
+        print("사용법: python run_case.py case.json output_root [input_dir] [--question-state state.json]")
         return 2
     case_path, output_root = Path(argv[1]), Path(argv[2])
-    input_dir = argv[3] if len(argv) == 4 else None
+    input_dir = argv[3] if len(argv) in (4, 6) and not state_only else None
+    state_path = Path(argv[4] if state_only else argv[5]) if state_only or state_with_input else None
+    if state_path:
+        try:
+            state = json.loads(state_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            print("[중단] question-state JSON을 읽을 수 없습니다.")
+            return 2
+        errors = questions.validate_state(state)
+        if errors:
+            print("[중단] 질문 응답 상태를 확인해 주세요.")
+            for error in errors:
+                print(f"  {error}")
+            return 2
+        pending = questions.pending_required(state.get("required_question_ids", []), state)
+        if pending:
+            print("[중단] 필수 확인 질문에 답해 주세요.")
+            for qid in pending:
+                print(f"  {qid}")
+            return 2
     try:
         case = json.loads(case_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):

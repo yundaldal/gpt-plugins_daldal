@@ -140,7 +140,7 @@ class PumuiParityRegressionTests(unittest.TestCase):
             self.assertIn("미완료", document)
 
         self.assertEqual(manifest["extensions"]["com.openai"]["interface"]["capabilities"], ["Interactive"])
-        self.assertEqual(manifest["version"], "0.1.10")
+        self.assertEqual(manifest["version"], "0.1.11")
         self.assertIn("기안문.hwpx를 기본으로 먼저 시도", prompt)
         self.assertIn("일반 텍스트(.txt) 초안을 만들어도 괜찮을까요?", prompt)
         self.assertIn("명시적으로 동의하기 전에는 .txt를 만들지", prompt)
