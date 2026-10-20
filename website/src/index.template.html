@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f8f7ec" />
+    <meta name="description" content="달달샘 플러그인 8종을 살펴보고, 무료 ChatGPT에 설치한 뒤 첫 질문까지 따라 해 보세요." />
+    <meta property="og:title" content="달달샘 선생님 도구함" />
+    <meta property="og:description" content="필요한 도구 찾기부터 첫 질문까지, 차근차근 안내해요." />
+    <title>달달샘 선생님 도구함</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./src/styles.css" />
+    <script type="module" src="./src/main.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">본문으로 바로 가기</a>
+    <header class="site-header">
+      <div class="header-inner page-width">
+        <a class="brand" href="#top" aria-label="달달샘 선생님 도구함 맨 위로">
+          <span class="brand-sticker" aria-hidden="true">달</span>
+          <span class="brand-copy"><strong>달달샘</strong><small>선생님 도구함</small></span>
+        </a>
+        <nav class="main-nav" aria-label="주 메뉴">
+          <a href="#plugins">플러그인 찾기</a>
+          <a href="#install">설치 방법</a>
+          <a href="#start">처음 사용하기</a>
+        </nav>
+        <a class="header-note" href="#plugins"><span aria-hidden="true">✦</span> 8종 모두 무료 사용 가능</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero page-width" id="top" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> 선생님을 위한 달달샘 도구함</p>
+          <p class="free-badge"><span aria-hidden="true">✿</span> {{FREE_MESSAGE}}</p>
+          <p class="hero-proof"><strong>GPTs 시절 누적 이용 4,800회+</strong><span>기록이 확인된 GPTs 6종 기준</span></p>
+          <h1 id="hero-title">선생님의 익숙한 AI 도우미,<br /><span>이제 ChatGPT에서 바로 불러요.</span></h1>
+          <p class="hero-lede">달달샘 플러그인을 설치해 두고,<br class="desktop-break" />필요한 순간 채팅에서 골라 쓰세요.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#plugins">내게 맞는 플러그인 찾기 <span aria-hidden="true">↘</span></a>
+            <a class="button button-secondary" href="#install">GPT무료계정 설치 방법</a>
+          </div>
+          <p class="hero-footnote"><span aria-hidden="true">↳</span> ZIP을 올린 뒤 카드에서 <strong>+ → 설치</strong>를 한 번 더 확인해요.</p>
+        </div>
+
+        <div class="hero-art" aria-label="달달샘 너구리가 선생님 도구를 정리하는 모습">
+          <div class="desk-paper desk-paper-back" aria-hidden="true"></div>
+          <div class="desk-paper desk-paper-front" aria-hidden="true">
+            <span class="paper-label">오늘의 도구함</span>
+            <span class="paper-doodle" aria-hidden="true">⌁</span>
+            <div class="paper-rules" aria-hidden="true"><i></i><i></i><i></i></div>
+          </div>
+          <div class="hero-tab hero-tab-admin" aria-hidden="true"><span>품의</span><b>▤</b></div>
+          <div class="hero-tab hero-tab-iep" aria-hidden="true"><span>IEP</span><b>✿</b></div>
+          <div class="hero-tab hero-tab-concept" aria-hidden="true"><span>수업</span><b>◇</b></div>
+          <div class="mascot-ground" aria-hidden="true"></div>
+          <img class="hero-mascot" src="./assets/character/action-laptop.png" alt="초록 티셔츠를 입은 달달샘 너구리가 노트북으로 일하는 모습" />
+          <div class="mascot-note" aria-hidden="true"><span>필요한 순간</span><strong>차근차근 같이 해요!</strong></div>
+          <span class="hero-spark hero-spark-one" aria-hidden="true">✳</span>
+          <span class="hero-spark hero-spark-two" aria-hidden="true">✦</span>
+        </div>
+      </section>
+
+      <section class="quick-flow page-width" aria-label="시작 순서">
+        <div class="flow-heading"><span class="flow-icon" aria-hidden="true">↗</span><strong>처음이라면 이 순서로</strong></div>
+        <ol class="flow-list">
+          <li><span class="flow-number">01</span><span>도구 고르기</span></li>
+          <li><span class="flow-number">02</span><span>ZIP 받기</span></li>
+          <li><span class="flow-number">03</span><span>업로드하고 설치</span></li>
+          <li><span class="flow-number">04</span><span>채팅에서 질문하기</span></li>
+        </ol>
+      </section>
+
+      <section class="catalog-section section-space" id="plugins" aria-labelledby="catalog-title">
+        <div class="page-width">
+          <div class="section-heading catalog-heading">
+            <div>
+              <p class="eyebrow"><span class="section-mark" aria-hidden="true">01</span> 선생님 업무에 맞춰 골라요</p>
+              <h2 id="catalog-title">어떤 도움이 필요하세요?</h2>
+              <p class="section-lede">준비할 자료와 받아볼 결과를 보고, 지금 필요한 도구를 찾아보세요.</p>
+            </div>
+            <p class="catalog-count"><strong>8</strong><span>가지 도구</span></p>
+          </div>
+
+          <div class="filter-bar" aria-label="업무별 플러그인 보기">
+            <div class="filter-buttons" role="group" aria-label="업무별 필터">
+              <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">전체</button>
+              <button class="filter-button" type="button" data-filter="admin" aria-pressed="false">행정·품의</button>
+              <button class="filter-button" type="button" data-filter="iep" aria-pressed="false">특수교육</button>
+              <button class="filter-button" type="button" data-filter="concept" aria-pressed="false">개념기반 수업</button>
+              <button class="filter-button" type="button" data-filter="game" aria-pressed="false">학습 게임</button>
+            </div>
+            <p class="filter-status" role="status" aria-live="polite">8개 도구를 보고 있어요.</p>
+          </div>
+
+          <div class="plugin-grid" data-plugin-list>
+            {{PLUGIN_CARDS}}
+          </div>
+          <p class="catalog-note"><span aria-hidden="true">✎</span> 어떤 도구를 골라도 무료 ChatGPT에서 사용할 수 있어요. ZIP을 받은 뒤 설치 방법을 따라가면 돼요.</p>
+        </div>
+      </section>
+
+      <section class="install-section section-space" id="install" aria-labelledby="install-title">
+        <div class="page-width">
+          <div class="section-heading install-heading">
+            <div>
+              <p class="eyebrow"><span class="section-mark" aria-hidden="true">02</span> 화면을 보며 천천히 따라와요</p>
+              <h2 id="install-title">ZIP을 올린 뒤,<br class="mobile-break" /><span>카드에서 설치</span>까지 해요.</h2>
+              <p class="section-lede">이 안내는 무료 ChatGPT 계정 기준이에요. 업로드만으로 끝나지 않아요. 목록에 생긴 카드의 <strong>+ → 설치 → 설치됨</strong>을 확인해 주세요.</p>
+            </div>
+            <a class="text-link" href="{{NOTION_URL}}" target="_blank" rel="noreferrer">원본 설치 안내 보기 <span aria-hidden="true">↗</span></a>
+          </div>
+
+          <div class="selected-tool-panel">
+            <div class="selected-tool-icon" aria-hidden="true">↳</div>
+            <div class="selected-tool-copy" data-selected-plugin aria-live="polite">
+              <strong>어떤 도구를 설치할까요?</strong>
+              <p>위 도구 카드에서 ‘이 도구 설치 방법’을 누르면 이름과 ZIP을 여기서 확인할 수 있어요.</p>
+            </div>
+            <a class="selected-download" data-selected-download href="#plugins" hidden>선택한 ZIP 받기</a>
+          </div>
+
+          <div class="guide-grid">
+            {{INSTALL_STEPS}}
+          </div>
+        </div>
+      </section>
+
+      <section class="start-section section-space" id="start" aria-labelledby="start-title">
+        <div class="page-width start-layout">
+          <div class="start-copy">
+            <p class="eyebrow"><span class="section-mark" aria-hidden="true">03</span> 설치하고 첫 대화를 시작해요</p>
+            <h2 id="start-title">첫 질문은<br /><span>이렇게 시작해요.</span></h2>
+            <p>새 채팅에서 설치한 플러그인을 먼저 고른 다음, 아래 질문을 보내세요. 필요한 자료와 진행 순서를 안내받을 수 있어요.</p>
+            <a class="button button-light" href="https://chatgpt.com/" target="_blank" rel="noreferrer">ChatGPT 열기 <span aria-hidden="true">↗</span></a>
+            <p class="start-tip">플러그인이 자동으로 선택되거나 질문을 대신 보내지는 않아요. 채팅에서 직접 골라 주세요.</p>
+          </div>
+          <div class="prompt-card">
+            <div class="prompt-card-top"><span class="prompt-label"><span aria-hidden="true">✳</span> 복사해서 시작해요</span><span class="prompt-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
+            <label class="visually-hidden" for="first-question">첫 질문 문장</label>
+            <textarea id="first-question" aria-label="첫 질문 문장" readonly rows="3">{{FIRST_PROMPT}}</textarea>
+            <div class="prompt-card-bottom">
+              <button class="button button-copy" type="button" data-copy-first>질문 복사</button>
+              <p class="copy-status" data-copy-status role="status" aria-live="polite"></p>
+            </div>
+            <p class="prompt-note">복사가 안 되면 문장을 선택해 직접 복사하면 돼요.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="faq-section section-space" aria-labelledby="faq-title">
+        <div class="page-width faq-layout">
+          <div class="section-heading">
+            <p class="eyebrow"><span class="section-mark" aria-hidden="true">04</span> 막히는 부분은 여기서 확인해요</p>
+            <h2 id="faq-title">자주 묻는 질문</h2>
+            <p class="section-lede">설치와 도구 선택을 따라 하다가 궁금한 점을 모았어요.</p>
+          </div>
+          <div class="faq-list">
+            {{FAQ_ITEMS}}
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="page-width footer-inner">
+        <div class="footer-brand"><span class="brand-sticker" aria-hidden="true">달</span><span><strong>달달샘</strong><small>선생님 도구함</small></span></div>
+        <p>선생님의 하루가 조금 더 가벼워지도록.</p>
+        <div class="footer-links">
+          <a href="{{GITHUB_URL}}" target="_blank" rel="noreferrer">플러그인 원본 <span aria-hidden="true">↗</span></a>
+          <a href="{{NOTION_URL}}" target="_blank" rel="noreferrer">설치 안내 <span aria-hidden="true">↗</span></a>
+        </div>
+        <small class="footer-date">설치 안내 확인 · 2026. 10. 20.</small>
+      </div>
+    </footer>
+
+    <dialog class="screenshot-dialog" aria-label="설치 화면 크게 보기" data-screenshot-dialog>
+      <div class="dialog-inner">
+        <button class="dialog-close" type="button" aria-label="닫기" data-close-dialog>×</button>
+        <p class="dialog-title" data-dialog-title></p>
+        <div class="dialog-image-frame">
+          <img data-dialog-image alt="" />
+          <span class="dialog-image-highlight" data-dialog-highlight aria-hidden="true"></span>
+        </div>
+        <p class="dialog-caption" data-dialog-caption></p>
+      </div>
+    </dialog>
+  </body>
+</html>
