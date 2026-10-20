@@ -1,0 +1,64 @@
+﻿name: Deploy website to GitHub Pages
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Install dependencies
+        working-directory: website
+        run: npm ci
+      - name: Check content
+        working-directory: website
+        run: npm run check:content
+      - name: Check content contract
+        working-directory: website
+        run: node --test tests/content.spec.mjs
+      - name: Check plugin downloads
+        working-directory: website
+        run: npm run check:downloads
+      - name: Install Chromium
+        working-directory: website
+        run: npx playwright install --with-deps chromium
+      - name: Run browser checks
+        working-directory: website
+        run: npm run test:e2e
+      - name: Check contrast and nested-path deployment
+        working-directory: website
+        run: npm run check:predeploy
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: website/dist
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

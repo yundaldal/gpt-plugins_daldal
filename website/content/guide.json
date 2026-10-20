@@ -1,0 +1,96 @@
+{
+  "firstPrompt": "너를 어떻게 활용해? 순서대로 알려줘",
+  "freeMessage": "8종 모두 무료 ChatGPT 사용자도 사용할 수 있어요.",
+  "sourceUrls": {
+    "github": "https://github.com/yundaldal/gpt-plugins_daldal",
+    "notion": "https://app.notion.com/p/3ff456d348ab80619f18ed565dc066f5"
+  },
+  "steps": [
+    {
+      "id": "prepare",
+      "title": "ZIP 파일 준비",
+      "description": "원하는 플러그인의 ZIP을 받아요. 압축을 풀지 말고 받은 파일 그대로 준비해요.",
+      "image": null,
+      "imageAlt": null
+    },
+    {
+      "id": "step-01",
+      "title": "왼쪽 메뉴에서 플러그인 열기",
+      "description": "ChatGPT 왼쪽 메뉴에서 ‘플러그인’을 눌러요.",
+      "image": "assets/install/source-01.png",
+      "imageAlt": "ChatGPT 왼쪽 메뉴에서 플러그인 항목이 선택된 화면"
+    },
+    {
+      "id": "step-02",
+      "title": "추가 메뉴 열기",
+      "description": "오른쪽 위 ‘추가’를 눌러요. 열리는 메뉴에서 업로드 항목을 찾을 수 있어요.",
+      "image": "assets/install/source-02.png",
+      "imageAlt": "플러그인 화면 오른쪽 위 추가 버튼이 표시된 메뉴"
+    },
+    {
+      "id": "step-03",
+      "title": "ZIP을 업로드하고 기다리기",
+      "description": "‘플러그인 압축 파일 업로드’를 누르고 받은 ZIP을 선택해요. 파일 선택 창에서 압축을 풀지 않은 ZIP을 고른 뒤 업로드가 끝날 때까지 기다려요. 업로드되면 ‘내가 만든 플러그인’ 목록에 카드가 나타나요.",
+      "image": "assets/install/source-03.png",
+      "imageAlt": "추가 메뉴에서 플러그인 압축 파일 업로드 항목이 강조된 화면"
+    },
+    {
+      "id": "step-04",
+      "title": "카드의 +를 눌러 설치하기",
+      "description": "목록에 카드가 나타나면 카드 오른쪽의 +를 누르고, 이어지는 메뉴에서 ‘설치’를 선택해요. ‘설치됨’ 표시를 확인하면 설치가 끝나요.",
+      "image": "assets/install/source-04.png",
+      "imageAlt": "내가 만든 플러그인 카드 오른쪽에 + 버튼이 보이는 화면"
+    },
+    {
+      "id": "choose-plugin",
+      "title": "새 채팅에서 설치한 도구 선택하기",
+      "description": "새 채팅에서 + 또는 ‘플러그인’을 누르고, 설치한 달달샘 도구를 골라요. 이름으로 찾을 때는 카드에 함께 적힌 원래 이름을 확인해요.",
+      "image": null,
+      "imageAlt": null
+    },
+    {
+      "id": "first-question",
+      "title": "첫 질문 보내기",
+      "description": "도구를 선택한 뒤 이 문장을 보내면 필요한 자료와 진행 순서를 안내받을 수 있어요.",
+      "image": null,
+      "imageAlt": null
+    },
+    {
+      "id": "provide-materials",
+      "title": "필요한 자료 건네기",
+      "description": "도구가 안내하는 자료를 올리거나 내용을 입력해 실제 업무를 시작해요. 완성된 내용은 선생님이 확인하고 사용해 주세요.",
+      "image": null,
+      "imageAlt": null
+    }
+  ],
+  "faq": [
+    {
+      "question": "무료 ChatGPT에서도 사용할 수 있나요?",
+      "answer": "네. 8종 모두 무료 ChatGPT 사용자도 사용할 수 있어요. ChatGPT의 이용 한도와 파일 기능은 계정에서 제공하는 범위에 따라 달라질 수 있어요."
+    },
+    {
+      "question": "ZIP 압축을 풀어서 올리나요?",
+      "answer": "아니요. ZIP 압축을 풀지 말고, 받은 파일 그대로 업로드해요."
+    },
+    {
+      "question": "ZIP 업로드가 끝나면 바로 설치된 건가요?",
+      "answer": "아직 한 단계 남았어요. ‘내가 만든 플러그인’ 목록에서 해당 카드 오른쪽 +를 누르고 ‘설치’를 선택한 뒤 ‘설치됨’ 표시를 확인해요."
+    },
+    {
+      "question": "설치한 도구는 어디서 골라요?",
+      "answer": "새 채팅의 + 또는 ‘플러그인’ 메뉴에서 설치한 도구를 선택해요. 도구 이름으로 찾을 때는 카드에 적힌 원래 이름을 참고할 수 있어요."
+    },
+    {
+      "question": "두 품의 도구는 어떻게 달라요?",
+      "answer": "학교 품의문·엑셀 도우미는 견적서나 물품 목록을 학교 품의와 Excel로 정리해요. 교육청·교육행정 품의 도우미는 수당·물품·경비 자료를 바탕으로 품의 초안과 계산 산출물 준비를 도와요."
+    },
+    {
+      "question": "핵심개념 도구와 단원·차시 설계 도구는 다른가요?",
+      "answer": "핵심개념 도구는 개념·일반화·탐구질문을 연결해요. 단원·차시 설계 도구는 평가와 차시별 지도안까지 계획해요."
+    },
+    {
+      "question": "완성된 문서나 결과는 그대로 사용해도 되나요?",
+      "answer": "문서와 계산 결과는 원자료와 학교의 기준에 맞는지 확인한 뒤 사용해 주세요."
+    }
+  ]
+}

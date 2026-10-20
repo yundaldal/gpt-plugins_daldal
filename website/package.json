@@ -1,0 +1,22 @@
+{
+  "name": "daldal-plugin-toolbox",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "predev": "node scripts/render-content.mjs",
+    "dev": "vite --host 127.0.0.1",
+    "prebuild": "node scripts/render-content.mjs",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "check:content": "node scripts/render-content.mjs && node scripts/check-content.mjs",
+    "check:predeploy": "node scripts/check-predeploy.mjs",
+    "check:downloads": "node scripts/check-downloads.mjs",
+    "pretest:e2e": "npm run build",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "vite": "8.3.4"
+  }
+}
