@@ -140,7 +140,7 @@ class PumuiParityRegressionTests(unittest.TestCase):
             self.assertIn("미완료", document)
 
         self.assertEqual(manifest["extensions"]["com.openai"]["interface"]["capabilities"], ["Interactive"])
-        self.assertEqual(manifest["version"], "0.1.10")
+        self.assertEqual(manifest["version"], "0.1.11")
         self.assertIn("기안문.hwpx를 기본으로 먼저 시도", prompt)
         self.assertIn("일반 텍스트(.txt) 초안을 만들어도 괜찮을까요?", prompt)
         self.assertIn("명시적으로 동의하기 전에는 .txt를 만들지", prompt)
@@ -267,6 +267,8 @@ class PumuiParityRegressionTests(unittest.TestCase):
             case_path = tmp_path / "synthetic-case.json"
             case_path.write_text(json.dumps(case, ensure_ascii=False), encoding="utf-8")
             output_root = tmp_path / "output"
+            state_path = tmp_path / "question-state.json"
+            state_path.write_text(json.dumps({"source_revision": run_case.compute_revision(case_path), "context": {}, "required_question_ids": [], "questions": {}}, ensure_ascii=False), encoding="utf-8")
 
             def write_synthetic_artifact(_draft, path):
                 Path(path).write_bytes(b"synthetic test artifact")
@@ -282,7 +284,7 @@ class PumuiParityRegressionTests(unittest.TestCase):
                 stack.enter_context(patch.object(run_case.harness, "run_checks", return_value=[("합성 셀 점검", False, "cell:HWPX")]))
                 output = io.StringIO()
                 with contextlib.redirect_stdout(output):
-                    return_code = run_case.main(["run_case.py", str(case_path), str(output_root)])
+                    return_code = run_case.main(["run_case.py", str(case_path), str(output_root), "--question-state", str(state_path)])
 
         self.assertEqual(return_code, 1)
         self.assertIn("[점검 실패]", output.getvalue())
@@ -296,9 +298,11 @@ class PumuiParityRegressionTests(unittest.TestCase):
             case_path = root / "synthetic-case.json"
             case_path.write_text(json.dumps(case, ensure_ascii=False), encoding="utf-8")
             output_root = root / "output"
+            state_path = root / "question-state.json"
+            state_path.write_text(json.dumps({"source_revision": run_case.compute_revision(case_path), "context": {}, "required_question_ids": [], "questions": {}}, ensure_ascii=False), encoding="utf-8")
             output = io.StringIO()
             with contextlib.redirect_stdout(output):
-                return_code = run_case.main(["run_case.py", str(case_path), str(output_root)])
+                return_code = run_case.main(["run_case.py", str(case_path), str(output_root), "--question-state", str(state_path)])
 
             self.assertEqual(return_code, 0, output.getvalue())
             result_dir = next(path for path in output_root.iterdir() if path.is_dir())

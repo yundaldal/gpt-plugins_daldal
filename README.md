@@ -10,7 +10,7 @@
 <td>품의 기안 도우미 (교육청·교육행정용)</td>
 <td>교육행정·교육청 업무에 특화한 HWPX 품의 초안, 수당·물품·경비 계산 산출물 및 교차 점검</td>
 <td>해당 없음</td>
-<td><a href="https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/pumui-daldal-0.1.10.zip">ZIP 다운로드</a></td>
+<td><a href="https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/pumui-daldal-0.1.11.zip">ZIP 다운로드</a></td>
 <td><a href="plugins/pumui-daldal/">사용 안내·원본</a></td>
 </tr>
 <tr>
