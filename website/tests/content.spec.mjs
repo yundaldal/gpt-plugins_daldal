@@ -31,7 +31,7 @@ test('catalog contains the eight approved plugins in the approved order', () => 
 
 test('each catalog item links its exact individual ZIP', () => {
   const files = [
-    'pumui-daldal-0.1.10.zip',
+    'pumui-daldal-0.1.11.zip',
     'approval-excel.zip',
     'related-document-extractor.zip',
     'iep-plan.zip',
