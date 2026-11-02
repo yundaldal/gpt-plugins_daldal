@@ -168,7 +168,7 @@ Plugin Creator로 비공개 플러그인 등록을 진행해 줘. 활성 워크�
 
 이 자료는 ChatGPT 플러그인이 아니라 Skill입니다. [원본 저장소](https://github.com/yundaldal/korean-official-doc/tree/analyzer) · [배포 ZIP](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/korean-official-doc-analyzer.zip) · MIT License
 
-Claude 무료 계정에서 사용할 수 있습니다. Settings → Capabilities에서 Code execution and file creation을 켜고, Customize → Skills → + Create skill → Upload a skill에서 ZIP을 올린 뒤 스킬을 켜세요. [Claude 공식 Skills 안내](https://support.claude.com/en/articles/12512180-use-skills-in-claude)를 참고하세요. ChatGPT 무료 계정에서는 사용할 수 없습니다. Plugin Creator를 통한 ChatGPT Skill 등록은 계정·환경에서 지원되는지 보장할 수 없습니다.
+Claude 무료 계정에서 사용할 수 있습니다. Settings → Capabilities에서 Code execution and file creation을 켜세요. 새 Settings 화면에서는 Create and edit files로 표시될 수 있습니다. 이어서 Customize → Skills → + Create skill → Upload a skill에서 ZIP을 올린 뒤 스킬을 켜세요. [Claude 공식 Skills 안내](https://support.claude.com/en/articles/12512180-use-skills-in-claude)를 참고하세요. ChatGPT 무료 계정에서는 사용할 수 없습니다. Plugin Creator를 통한 ChatGPT Skill 등록은 계정·환경에서 지원되는지 보장할 수 없습니다.
 
 ## Codex에서 설치하기
 

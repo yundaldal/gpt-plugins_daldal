@@ -117,7 +117,7 @@ ChatGPT 웹은 PC의 로컬 폴더에 직접 접근할 수 없습니다. 데스�
 
 이 자료는 ChatGPT 플러그인이 아니라 `SKILL.md`와 보조 스크립트로 구성된 독립 Skill입니다. 원본은 [korean-official-doc 저장소](https://github.com/yundaldal/korean-official-doc/tree/analyzer), 배포 ZIP은 [korean-official-doc-analyzer.zip](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/korean-official-doc-analyzer.zip)에서 확인할 수 있습니다. 라이선스는 MIT입니다.
 
-- **Claude 무료 계정:** 사용할 수 있습니다. Settings → Capabilities에서 Code execution and file creation을 켠 뒤 Claude의 Customize → Skills → + Create skill → Upload a skill에서 ZIP을 올리고 스킬을 켭니다. 자세한 내용은 [Claude 공식 Skills 안내](https://support.claude.com/en/articles/12512180-use-skills-in-claude)를 참고하세요.
+- **Claude 무료 계정:** 사용할 수 있습니다. Settings → Capabilities에서 Code execution and file creation을 켭니다. 새 Settings 화면에서는 Create and edit files로 표시될 수 있습니다. 그런 다음 Claude의 Customize → Skills → + Create skill → Upload a skill에서 ZIP을 올리고 스킬을 켭니다. 자세한 내용은 [Claude 공식 Skills 안내](https://support.claude.com/en/articles/12512180-use-skills-in-claude)를 참고하세요.
 - **ChatGPT 무료 계정:** 이 독립 Skill은 사용할 수 없습니다. `@plugin-creator`가 표시되더라도 계정과 현재 환경에서 Skill 등록을 지원하는지 별도로 확인해야 하며, 지원 여부를 보장하지 않습니다.
 
 ## 플러그인 형식

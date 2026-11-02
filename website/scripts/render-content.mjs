@@ -137,7 +137,7 @@ function renderSkill(skill) {
       <div class="skill-platform-notes">
         <h4>Claude 무료 계정</h4>
         <ol>
-          <li>Settings → Capabilities에서 <strong>Code execution and file creation</strong>을 켜세요.</li>
+          <li>Settings → Capabilities에서 <strong>Code execution and file creation</strong>을 켜세요. 새 Settings 화면에서는 <strong>Create and edit files</strong>로 표시될 수 있어요.</li>
           <li>ZIP을 받은 뒤 Customize → Skills → <strong>+ Create skill → Upload a skill</strong>에서 올리고, 스킬을 켜세요.</li>
         </ol>
         <p><a href="${githubHelp}" target="_blank" rel="noreferrer">Claude 스킬 공식 안내</a></p>
