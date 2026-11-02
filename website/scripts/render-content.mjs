@@ -120,7 +120,7 @@ function renderSkill(skill) {
   const sourceUrl = escapeHtml(skill.sourceUrl);
   const skillFileUrl = escapeHtml(skill.skillFileUrl);
   const downloadUrl = escapeHtml(skill.downloadUrl);
-  const githubHelp = 'https://support.claude.com/en/articles/12512180-use-skills-in-claude';
+  const githubHelp = 'https://support.claude.com/ko/articles/12512180-claude%EC%97%90%EC%84%9C-%EC%8A%A4%ED%82%AC-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0';
 
   return `
     <article class="plugin-card skill-card" data-skill-id="${escapeHtml(skill.id)}">
@@ -137,10 +137,10 @@ function renderSkill(skill) {
       <div class="skill-platform-notes">
         <h4>Claude 무료 계정</h4>
         <ol>
-          <li>Settings → Capabilities에서 <strong>Code execution and file creation</strong>을 켜세요. 새 Settings 화면에서는 <strong>Create and edit files</strong>로 표시될 수 있어요.</li>
-          <li>ZIP을 받은 뒤 Customize → Skills → <strong>+ Create skill → Upload a skill</strong>에서 올리고, 스킬을 켜세요.</li>
+          <li><strong>설정 → 기능</strong>에서 <strong>코드 실행 및 파일 생성</strong>이 켜져 있는지 확인하세요. 새 화면에서는 <strong>파일 생성 및 편집</strong>으로 표시될 수 있어요. 무료 계정은 기본으로 켜져 있을 수 있으니, 꺼져 있을 때만 켜면 됩니다.</li>
+          <li>ZIP을 받은 뒤 <strong>사용자 정의 → 스킬 → + → + 스킬 만들기 → 스킬 업로드</strong>를 차례로 누르세요. 업로드가 끝나면 스킬 목록에서 켜세요.</li>
         </ol>
-        <p><a href="${githubHelp}" target="_blank" rel="noreferrer">Claude 스킬 공식 안내</a></p>
+        <p><a href="${githubHelp}" target="_blank" rel="noreferrer">Claude 한국어 공식 스킬 안내</a></p>
         <h4>ChatGPT 무료 계정</h4>
         <p>이 독립 Skill은 무료 ChatGPT에서 사용할 수 없습니다. ChatGPT에서 Skill을 직접 등록·실행할 수 있다고 보장하지 않으며, Plugin Creator가 보이더라도 스킬 설치가 지원되는지 계정에서 확인해야 합니다.</p>
       </div>
@@ -207,6 +207,7 @@ const output = template
   .replace('{{GITHUB_URL}}', escapeHtml(guide.sourceUrls.github))
   .replaceAll('{{NOTION_URL}}', escapeHtml(guide.sourceUrls.notion))
   .replace('{{PLUGIN_CARDS}}', plugins.map(renderPlugin).join('\n'))
+  .replace('{{SKILL_COUNT}}', String(skills.length))
   .replace('{{SKILL_CARDS}}', skills.map(renderSkill).join('\n'))
   .replace('{{INSTALL_STEPS}}', guide.steps.map(renderStep).join('\n'))
   .replace('{{FAQ_ITEMS}}', guide.faq.map(renderFaq).join('\n'));

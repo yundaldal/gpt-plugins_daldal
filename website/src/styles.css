@@ -2369,8 +2369,8 @@ h2 {
 .install-prompt-details summary { cursor: pointer; padding-block: .75rem; min-height: 44px; }
 .install-prompt-text { width: 100%; min-width: 0; box-sizing: border-box; resize: vertical; font: inherit; font-size: 1rem; line-height: 1.6; color: inherit; background: #fff; padding: .75rem; }
 .skill-section { background: #f5f1e5; }
-.skill-grid { grid-template-columns: minmax(0, 1fr); }
-.skill-card { max-width: 900px; }
+.skill-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); align-items: start; }
+.skill-card { max-width: none; }
 .availability-chip { display: inline-flex; align-items: center; border-radius: 999px; padding: .4rem .65rem; background: #f5e2df; color: #733b32; font-size: .7rem; font-weight: 700; }
 .skill-platform-notes { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid #d9d2c3; }
 .skill-platform-notes h4 { margin: .8rem 0 .4rem; font-size: 1rem; }
