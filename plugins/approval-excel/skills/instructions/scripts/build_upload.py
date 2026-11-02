@@ -1,6 +1,9 @@
 """Fill the supplied Ed fine templates; never create summary rows or sheets."""
 import argparse
 import json
+import os
+import runpy
+import tempfile
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from xml.sax.saxutils import escape
@@ -70,7 +73,7 @@ def prepare(case):
     return kind, rows
 
 
-def build(case, output):
+def _write(case, output):
     kind, rows = prepare(case)
     output = Path(output)
     suffix = ".xls" if kind == "gyeonggi" else ".xlsx"
@@ -118,6 +121,28 @@ def build(case, output):
     return output
 
 
+def build(case, output):
+    kind, _ = prepare(case)
+    output = Path(output)
+    filename = '엑셀산출파일 경기도.xls' if kind == 'gyeonggi' else '엑셀산출파일 경기도외 시도교육청.xlsx'
+    template = ROOT / 'templates' / filename
+    if output.suffix.lower() != template.suffix:
+        raise ValueError(f'선택한 원본 양식의 {template.suffix} 확장자를 유지하세요.')
+    if output.resolve() == template.resolve():
+        raise ValueError('원본 양식을 덮어쓸 수 없습니다.')
+    if not template.is_file():
+        raise FileNotFoundError('포함 원본을 찾지 못했습니다. runtime.md의 자체 복원 실행본을 사용하세요: ' + str(template))
+    output.parent.mkdir(parents=True, exist_ok=True)
+    # Publish only after the independent reader accepts the saved bytes.
+    with tempfile.TemporaryDirectory(prefix='.upload-', dir=output.parent) as folder:
+        temporary = Path(folder) / ('checked' + output.suffix)
+        _write(case, temporary)
+        validator = runpy.run_path(str(ROOT / 'scripts' / 'validate_upload.py'))['validate']
+        validator(case, temporary, template, kind)
+        os.replace(temporary, output)
+    return output
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("case", type=Path)
@@ -125,7 +150,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     try:
         result = build(json.loads(args.case.read_text(encoding="utf-8-sig")), args.output)
-    except (ValueError, OSError) as exc:
+    except (ValueError, OSError, ImportError) as exc:
         parser.exit(1, f"생성 중단: {exc}\n")
     print(result)
+    print('검증 통과: 원본 구조, 품목별 값, 데이터 행 수')
     print(GUIDANCE)
