@@ -117,7 +117,7 @@ class DeliveryTests(unittest.TestCase):
             for name, data in files.items():
                 self.assertEqual(z.read(name), data, name)
         for name in ('plugin.json', '.codex-plugin/plugin.json'):
-            self.assertEqual(json.loads(files[name])['version'], '0.14.4')
+            self.assertEqual(json.loads(files[name])['version'], '0.14.5')
 
     def test_delivery_instruction_and_unrelated_workflow_preserved(self):
         text = (SKILL / 'SKILL.md').read_text(encoding='utf-8')
