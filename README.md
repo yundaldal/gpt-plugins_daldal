@@ -71,6 +71,32 @@
 
 GPTs 누적 이용횟수는 제작자의 이전 기록 기준이며 집계일은 미상입니다. 현재 플러그인 다운로드 수와는 다릅니다. 별도 제작한 교육청·교육행정용 품의 도우미는 해당 없음, 기록을 확보하지 못한 관련 공문 추출기는 미확인으로 표시합니다. [수치 출처와 흐름 점검 기록](FLOW_AUDIT.md)을 참고하세요.
 
+## 플러그인별 GitHub URL
+
+ChatGPT에서 **Plugin Creator**를 설치·선택한 뒤 새 채팅에 **@plugin-creator**와 [플러그인별 설치 요청문](INSTALL-PROMPTS.md)을 붙여넣으세요. 지원되는 환경에서 원본을 가져와 비공개 플러그인으로 생성·등록하도록 요청합니다. 생성·등록 후 설치 버튼이나 권한 승인이 남을 수 있으며, 계정·워크스페이스에 따라 사용 가능 여부와 등록 위치가 달라집니다. 아래 주소 자체는 자동 설치 링크가 아닙니다.
+
+[웹사이트](https://yundaldal.github.io/gpt-plugins_daldal/)의 각 카드에서도 **채팅 설치 요청문 보기 → 설치 요청문 복사**를 이용할 수 있습니다.
+
+| 플러그인 | 개별 GitHub URL |
+| --- | --- |
+| 교육청·교육행정 품의 도우미 | https://github.com/yundaldal/gpt-plugins_daldal/tree/main/plugins/pumui-daldal |
+| 학교 품의문·엑셀 도우미 | https://github.com/yundaldal/gpt-plugins_daldal/tree/main/plugins/approval-excel |
+| 관련 공문 정보 추출기 | https://github.com/yundaldal/gpt-plugins_daldal/tree/main/plugins/related-document-extractor |
+| IEP 설계·성취기준 연결 | https://github.com/yundaldal/gpt-plugins_daldal/tree/main/plugins/iep-plan |
+| IEP 평가 입력 도우미 | https://github.com/yundaldal/gpt-plugins_daldal/tree/main/plugins/iep-eval |
+| 핵심개념·일반화·탐구질문 도우미 | https://github.com/yundaldal/gpt-plugins_daldal/tree/main/plugins/ib-core |
+| 개념기반 단원·차시 설계 도우미 | https://github.com/yundaldal/gpt-plugins_daldal/tree/main/plugins/ib-planner |
+| 캔바 AI 코드 생성 프롬프트 생성기 | https://github.com/yundaldal/gpt-plugins_daldal/tree/main/plugins/canva-game |
+
+### GitHub가 아직 연결되지 않았다면
+
+- ChatGPT에서 GitHub 연결을 요청하면 안내에 따라 설정의 앱 또는 플러그인에서 GitHub 연결을 시작합니다.
+- GitHub 계정으로 로그인합니다. 계정이 없다면 가입 화면의 **Continue with Google**을 통해 Google 계정으로 GitHub에 가입할 수 있습니다.
+- GitHub 화면에서 ChatGPT 앱 설치·접근 권한을 확인하고 승인한 뒤, ChatGPT로 돌아와 연결 상태를 확인합니다. 필요한 저장소 접근 권한도 화면 안내에 따라 확인합니다.
+- Plugin Creator를 선택한 채팅에 해당 플러그인의 설치 요청문을 다시 전달합니다. GitHub 연결은 저장소 접근을 위한 단계이며 플러그인 설치는 별도입니다. 메뉴·권한은 계정과 워크스페이스에 따라 다르며, URL로 설치할 수 없는 환경에서는 아래 ZIP 설치 안내를 이용합니다.
+
+[ChatGPT의 GitHub 연결 안내](https://help.openai.com/en/articles/11145903-connecting-github-to-chatgpt) · [Google 계정으로 GitHub 가입하기](https://docs.github.com/en/account-and-profile/how-tos/account-management/creating-an-account-on-github)
+
 ## 설치 안내
 
 사용 전에 [플러그인별 업로드 요청과 사용자 입력 흐름](FLOW_MAPS.md)을 확인할 수 있습니다.

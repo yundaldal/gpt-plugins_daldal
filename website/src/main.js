@@ -58,7 +58,16 @@ function selectFallback(button) {
     return;
   }
 
-  const quote = button.closest('.example-body')?.querySelector('blockquote');
+  if (button.hasAttribute('data-copy-install')) {
+    const field = button.closest('.install-prompt-details').querySelector('textarea');
+    field.focus();
+    field.select();
+    status.textContent = '설치 요청문을 직접 선택해 복사해 주세요.';
+    return;
+  }
+  const quote = button.hasAttribute('data-copy-url')
+    ? button.closest('.plugin-url-panel')?.querySelector('.plugin-url')
+    : button.closest('.example-body')?.querySelector('blockquote');
   if (quote) {
     const range = document.createRange();
     range.selectNodeContents(quote);
@@ -81,7 +90,11 @@ async function copyFromButton(button) {
     await navigator.clipboard.writeText(text);
     status.textContent = button.hasAttribute('data-copy-first')
       ? '복사했어요. ChatGPT에 붙여넣어 보세요.'
-      : '요청 예시를 복사했어요.';
+      : button.hasAttribute('data-copy-url')
+        ? 'GitHub URL을 복사했어요. ChatGPT에 붙여넣어 보세요.'
+        : button.hasAttribute('data-copy-install')
+          ? '설치 요청문을 복사했어요. Plugin Creator 채팅에 붙여넣으세요.'
+          : '요청 예시를 복사했어요.';
   } catch {
     selectFallback(button);
   }

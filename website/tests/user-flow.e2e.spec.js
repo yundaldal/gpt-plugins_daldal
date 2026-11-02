@@ -47,8 +47,8 @@ test('shows the historical GPTs usage proof and its scope on mobile', async ({ p
 
 test('reveals the original name and example prompt for a tool', async ({ page }) => {
   const firstCard = page.locator('[data-plugin-id="pumui-daldal"]');
-  await firstCard.locator('summary').click();
-  await expect(firstCard.getByText('품의 기안 도우미 (교육청·교육행정용)')).toBeVisible();
+  await firstCard.locator('.example-details > summary').click();
+  await expect(firstCard.getByText('품의 기안 도우미 (교육청·교육행정용)', { exact: true })).toBeVisible();
   await expect(firstCard.getByText(/첨부 자료를 바탕으로 품의 유형/)).toBeVisible();
   await expect(firstCard.getByText('문서·엑셀은 ChatGPT가 안내하는 자료와 생성 절차에 따라 준비해요.')).toBeVisible();
   await expect(page.locator('[data-plugin-id="approval-excel"]').getByText(/문서·엑셀은 ChatGPT가/)).toHaveCount(0);

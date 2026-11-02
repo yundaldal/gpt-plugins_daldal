@@ -2358,3 +2358,13 @@ h2 {
     transition-duration: 0.01ms !important;
   }
 }
+/* Individual repository URLs stay readable on narrow cards. */
+.plugin-url-panel { margin-block: 1rem; min-width: 0; font-size: .875rem; }
+.plugin-url-panel p { margin-block: .5rem; }
+.plugin-url { display: block; overflow-wrap: anywhere; }
+.github-connect-panel { margin-block: 1.5rem; padding: 1.25rem; border: 1px solid currentColor; border-radius: 1rem; scroll-margin-top: 6rem; }
+.github-connect-panel p { margin-block: .75rem; }
+
+.install-prompt-details { margin-block: .75rem; }
+.install-prompt-details summary { cursor: pointer; padding-block: .75rem; min-height: 44px; }
+.install-prompt-text { width: 100%; min-width: 0; box-sizing: border-box; resize: vertical; font: inherit; font-size: 1rem; line-height: 1.6; color: inherit; background: #fff; padding: .75rem; }

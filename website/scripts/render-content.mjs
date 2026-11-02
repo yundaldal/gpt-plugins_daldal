@@ -1,5 +1,6 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { installationPrompt } from './installation-prompt.mjs';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -44,6 +45,7 @@ function escapeHtml(value) {
 
 function renderPlugin(plugin) {
   const title = escapeHtml(plugin.title);
+  const installPrompt = escapeHtml(installationPrompt(plugin));
   const originalName = escapeHtml(plugin.originalName);
   const examplePrompt = escapeHtml(plugin.examplePrompt);
   const category = escapeHtml(plugin.category);
@@ -75,6 +77,24 @@ function renderPlugin(plugin) {
         <a class="install-link" href="#install" data-install-plugin="${escapeHtml(plugin.id)}">
           이 도구 설치 방법 <span aria-hidden="true">↗</span>
         </a>
+      </div>
+      <div class="plugin-url-panel">
+        <p><strong>ChatGPT에 전달할 개별 GitHub URL</strong></p>
+        <a class="plugin-url" href="${sourceUrl}" target="_blank" rel="noreferrer">${sourceUrl}</a>
+        <div class="example-actions">
+          <button class="example-copy" type="button" data-copy-text="${sourceUrl}" data-copy-url aria-label="${title} GitHub URL 복사">URL 복사</button>
+          <span class="copy-status" data-copy-status role="status" aria-live="polite"></span>
+        </div>
+        <p>Plugin Creator를 선택한 채팅에 설치 요청문을 붙여넣으세요. 지원되는 환경에서 생성·등록을 진행하며, 설치 확인이 추가로 필요할 수 있어요. <a href="#github-connect">연결·설치 안내</a></p>
+        <details class="install-prompt-details">
+          <summary>채팅 설치 요청문 보기</summary>
+          <label class="visually-hidden" for="install-prompt-${escapeHtml(plugin.id)}">${title} 설치 요청문</label>
+          <textarea id="install-prompt-${escapeHtml(plugin.id)}" class="install-prompt-text" readonly rows="9">${installPrompt}</textarea>
+          <div class="example-actions">
+            <button class="example-copy" type="button" data-copy-text="${installPrompt}" data-copy-install aria-label="${title} 설치 요청문 복사">설치 요청문 복사</button>
+            <span class="copy-status" data-copy-status role="status" aria-live="polite"></span>
+          </div>
+        </details>
       </div>
       <details class="example-details">
         <summary>사용 예시 보기</summary>
