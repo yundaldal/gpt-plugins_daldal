@@ -2368,3 +2368,23 @@ h2 {
 .install-prompt-details { margin-block: .75rem; }
 .install-prompt-details summary { cursor: pointer; padding-block: .75rem; min-height: 44px; }
 .install-prompt-text { width: 100%; min-width: 0; box-sizing: border-box; resize: vertical; font: inherit; font-size: 1rem; line-height: 1.6; color: inherit; background: #fff; padding: .75rem; }
+.skill-section { background: #f5f1e5; }
+.skill-grid { grid-template-columns: minmax(0, 1fr); }
+.skill-card { max-width: 900px; }
+.availability-chip { display: inline-flex; align-items: center; border-radius: 999px; padding: .4rem .65rem; background: #f5e2df; color: #733b32; font-size: .7rem; font-weight: 700; }
+.skill-platform-notes { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid #d9d2c3; }
+.skill-platform-notes h4 { margin: .8rem 0 .4rem; font-size: 1rem; }
+.skill-platform-notes p, .skill-platform-notes li { line-height: 1.65; }
+.skill-platform-notes ol { padding-left: 1.25rem; }
+.skill-source-note { margin-top: 1rem; overflow-wrap: anywhere; font-size: .8rem; }
+.install-request-builder { margin-block: 1.5rem; padding: clamp(1rem, 3vw, 1.5rem); background: #fff; border: 1px solid #d9d2c3; border-radius: 1rem; box-shadow: 0 8px 24px rgb(49 55 35 / 6%); }
+.install-request-builder h3 { margin-top: 0; }
+.install-request-builder > p { line-height: 1.65; }
+.install-request-builder label { display: block; margin-block: 1rem .4rem; font-weight: 700; }
+.request-generator-fields { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .65rem; }
+.request-generator-fields input { min-width: 0; min-height: 48px; padding: .7rem; border: 1px solid #969486; border-radius: .55rem; font: inherit; }
+.field-help, .request-feedback { margin: .35rem 0; color: #5d5c50; font-size: .85rem; overflow-wrap: anywhere; }
+.request-feedback { min-height: 1.4em; }
+.install-request-builder textarea { display: block; }
+.install-request-builder [disabled] { opacity: .55; cursor: not-allowed; }
+@media (max-width: 620px) { .request-generator-fields { grid-template-columns: minmax(0, 1fr); } }

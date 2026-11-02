@@ -112,6 +112,14 @@ ZIP 다운로드, 워크스페이스 업로드, 사용자 설치는 각각 별�
 - **프로젝트에서 로컬 폴더를 열지 않고 작업하려면:** 품의 자료를 해당 채팅창에 첨부합니다. 결과는 같은 채팅의 답변이나 다운로드 파일로 제시되며, PC의 로컬 폴더에 자동 저장되지는 않습니다.
 
 ChatGPT 웹은 PC의 로컬 폴더에 직접 접근할 수 없습니다. 데스크톱의 로컬 파일 접근은 앱·Work/Codex 권한과 폴더 접근 허용이 필요합니다. 프로젝트에 파일을 올리는 메뉴와 한도는 [ChatGPT 프로젝트 안내](https://help.openai.com/en/articles/10169521-projects-in-chatgpt) 및 [파일 업로드 안내](https://help.openai.com/en/articles/8555545-uploading-files-and-audio-to-chatgpt)를 참고하세요. 로컬 폴더 연결은 [ChatGPT Work와 Codex 안내](https://help.openai.com/en/articles/20001275-chatgpt-work-and-codex)를 참고하세요.
+
+## 독립 스킬: 대한민국 공문서 분석
+
+이 자료는 ChatGPT 플러그인이 아니라 `SKILL.md`와 보조 스크립트로 구성된 독립 Skill입니다. 원본은 [korean-official-doc 저장소](https://github.com/yundaldal/korean-official-doc/tree/analyzer), 배포 ZIP은 [korean-official-doc-analyzer.zip](https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/korean-official-doc-analyzer.zip)에서 확인할 수 있습니다. 라이선스는 MIT입니다.
+
+- **Claude 무료 계정:** 사용할 수 있습니다. Settings → Capabilities에서 Code execution and file creation을 켠 뒤 Claude의 Customize → Skills → + Create skill → Upload a skill에서 ZIP을 올리고 스킬을 켭니다. 자세한 내용은 [Claude 공식 Skills 안내](https://support.claude.com/en/articles/12512180-use-skills-in-claude)를 참고하세요.
+- **ChatGPT 무료 계정:** 이 독립 Skill은 사용할 수 없습니다. `@plugin-creator`가 표시되더라도 계정과 현재 환경에서 Skill 등록을 지원하는지 별도로 확인해야 하며, 지원 여부를 보장하지 않습니다.
+
 ## 플러그인 형식
 
 새로 추가한 6개는 외부 MCP 서버나 API 키를 요구하지 않는 Skills 전용 플러그인입니다. 사용자 요청에 맞는 지침과 참고자료를 ChatGPT에 제공합니다.

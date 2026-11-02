@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const template = await readFile(path.join(root, 'src/index.template.html'), 'utf8');
 const plugins = JSON.parse(await readFile(path.join(root, 'content/plugins.json'), 'utf8'));
+const skills = JSON.parse(await readFile(path.join(root, 'content/skills.json'), 'utf8'));
 const guide = JSON.parse(await readFile(path.join(root, 'content/guide.json'), 'utf8'));
 
 const categories = {
@@ -114,6 +115,43 @@ function renderPlugin(plugin) {
     </article>`;
 }
 
+function renderSkill(skill) {
+  const title = escapeHtml(skill.title);
+  const sourceUrl = escapeHtml(skill.sourceUrl);
+  const skillFileUrl = escapeHtml(skill.skillFileUrl);
+  const downloadUrl = escapeHtml(skill.downloadUrl);
+  const githubHelp = 'https://support.claude.com/en/articles/12512180-use-skills-in-claude';
+
+  return `
+    <article class="plugin-card skill-card" data-skill-id="${escapeHtml(skill.id)}">
+      <div class="plugin-card-top">
+        <span class="category-chip">독립 스킬</span>
+        <span class="free-mini">Claude 무료 사용 가능</span>
+        <span class="availability-chip unavailable">ChatGPT 무료 사용 불가</span>
+      </div>
+      <h3>${title}</h3>
+      <dl class="plugin-facts">
+        <div><dt>무엇을 하나요</dt><dd>${escapeHtml(skill.input)}</dd></div>
+        <div><dt>어떤 도움을 주나요</dt><dd>${escapeHtml(skill.output)}</dd></div>
+      </dl>
+      <div class="skill-platform-notes">
+        <h4>Claude 무료 계정</h4>
+        <ol>
+          <li>Settings → Capabilities에서 <strong>Code execution and file creation</strong>을 켜세요.</li>
+          <li>ZIP을 받은 뒤 Customize → Skills → <strong>+ Create skill → Upload a skill</strong>에서 올리고, 스킬을 켜세요.</li>
+        </ol>
+        <p><a href="${githubHelp}" target="_blank" rel="noreferrer">Claude 스킬 공식 안내</a></p>
+        <h4>ChatGPT 무료 계정</h4>
+        <p>이 독립 Skill은 무료 ChatGPT에서 사용할 수 없습니다. ChatGPT에서 Skill을 직접 등록·실행할 수 있다고 보장하지 않으며, Plugin Creator가 보이더라도 스킬 설치가 지원되는지 계정에서 확인해야 합니다.</p>
+      </div>
+      <div class="card-actions">
+        <a class="button button-download" href="${downloadUrl}" target="_blank" rel="noreferrer" aria-label="${title} Claude 스킬 ZIP 다운로드">스킬 ZIP 받기</a>
+        <a class="source-link" href="${sourceUrl}" target="_blank" rel="noreferrer">GitHub 원본 <span aria-hidden="true">↗</span></a>
+      </div>
+      <p class="skill-source-note">원본 Skill.md: <a href="${skillFileUrl}" target="_blank" rel="noreferrer">${skillFileUrl}</a> · ${escapeHtml(skill.license)} License</p>
+    </article>`;
+}
+
 function renderStep(step, index) {
   const badge = step.id === 'prepare'
     ? 'ZIP 준비'
@@ -169,6 +207,7 @@ const output = template
   .replace('{{GITHUB_URL}}', escapeHtml(guide.sourceUrls.github))
   .replaceAll('{{NOTION_URL}}', escapeHtml(guide.sourceUrls.notion))
   .replace('{{PLUGIN_CARDS}}', plugins.map(renderPlugin).join('\n'))
+  .replace('{{SKILL_CARDS}}', skills.map(renderSkill).join('\n'))
   .replace('{{INSTALL_STEPS}}', guide.steps.map(renderStep).join('\n'))
   .replace('{{FAQ_ITEMS}}', guide.faq.map(renderFaq).join('\n'));
 
@@ -177,4 +216,4 @@ if (/\{\{[A-Z_]+\}\}/.test(output)) {
 }
 
 await writeFile(path.join(root, 'index.html'), output, 'utf8');
-console.log(`Rendered ${plugins.length} plugin cards and ${guide.steps.length} guide steps to website/index.html`);
+console.log(`Rendered ${plugins.length} plugin cards, ${skills.length} skill cards, and ${guide.steps.length} guide steps to website/index.html`);

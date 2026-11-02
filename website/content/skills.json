@@ -1,0 +1,13 @@
+[
+  {
+    "id": "korean-official-doc-analyzer",
+    "title": "대한민국 공문서 분석 스킬",
+    "input": "대한민국 공문서·계획서의 날짜·요일·연도, 기관명, 맞춤법·어법과 담당자 정보를 점검합니다.",
+    "output": "오류 위치와 수정안, 근거를 정리하고 연도 변경 누락을 찾아 문서 검토를 돕습니다.",
+    "sourceUrl": "https://github.com/yundaldal/korean-official-doc/tree/analyzer",
+    "skillFileUrl": "https://github.com/yundaldal/korean-official-doc/blob/analyzer/SKILL.md",
+    "downloadUrl": "https://github.com/yundaldal/gpt-plugins_daldal/raw/refs/heads/main/downloads/korean-official-doc-analyzer.zip",
+    "zipFile": "korean-official-doc-analyzer.zip",
+    "license": "MIT"
+  }
+]

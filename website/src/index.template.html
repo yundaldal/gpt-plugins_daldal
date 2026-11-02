@@ -24,6 +24,7 @@
         </a>
         <nav class="main-nav" aria-label="주 메뉴">
           <a href="#plugins">플러그인 찾기</a>
+          <a href="#skills">공문서 스킬</a>
           <a href="#install">설치 방법</a>
           <a href="#start">처음 사용하기</a>
         </nav>
@@ -103,6 +104,21 @@
         </div>
       </section>
 
+      <section class="skill-section section-space" id="skills" aria-labelledby="skills-title">
+        <div class="page-width">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow"><span class="section-mark" aria-hidden="true">스킬</span> 플러그인과 별도로 제공해요</p>
+              <h2 id="skills-title">대한민국 공문서 분석 스킬</h2>
+              <p class="section-lede">ChatGPT 플러그인이 아닌 Skill입니다. 이용할 수 있는 AI와 설치 절차가 플러그인과 달라요.</p>
+            </div>
+          </div>
+          <div class="plugin-grid skill-grid">
+            {{SKILL_CARDS}}
+          </div>
+        </div>
+      </section>
+
       <section class="install-section section-space" id="install" aria-labelledby="install-title">
         <div class="page-width">
           <div class="section-heading install-heading">
@@ -113,6 +129,26 @@
             </div>
             <a class="text-link" href="{{NOTION_URL}}" target="_blank" rel="noreferrer">원본 설치 안내 보기 <span aria-hidden="true">↗</span></a>
           </div>
+
+          <section class="install-request-builder" aria-labelledby="request-builder-title">
+            <h3 id="request-builder-title">GitHub 주소로 설치 요청문 만들기</h3>
+            <p>플러그인 주소를 넣어 요청문을 만든 다음 새 ChatGPT 채팅에서 <strong>@plugin-creator</strong>를 선택해 붙여넣으세요. 저장소에 Skill이 있으면 요청문이 이를 구분합니다. 독립 Skill은 무료 ChatGPT에서 사용할 수 없으니, 아래 공문서 스킬 안내의 Claude 절차를 확인하세요.</p>
+            <form id="request-generator" novalidate>
+              <label for="github-repo-url">GitHub 저장소 또는 플러그인·스킬 폴더 주소</label>
+              <div class="request-generator-fields">
+                <input id="github-repo-url" name="githubUrl" type="url" inputmode="url" autocomplete="url" value="https://github.com/yundaldal/gpt-plugins_daldal/tree/main/plugins/pumui-daldal" aria-describedby="github-url-help request-feedback" required />
+                <button class="button button-primary" type="submit">요청문 만들기</button>
+              </div>
+              <p class="field-help" id="github-url-help">예: https://github.com/yundaldal/gpt-plugins_daldal/tree/main/plugins/pumui-daldal</p>
+              <p class="request-feedback" id="request-feedback" role="status" aria-live="polite"></p>
+            </form>
+            <label for="generated-request">ChatGPT에 붙여넣을 요청문</label>
+            <textarea id="generated-request" class="install-prompt-text" readonly rows="10" placeholder="GitHub 주소를 입력하고 ‘요청문 만들기’를 누르세요."></textarea>
+            <div class="example-actions">
+              <button class="example-copy" type="button" data-copy-generated-request disabled>요청문 복사</button>
+              <span class="copy-status" data-copy-status role="status" aria-live="polite"></span>
+            </div>
+          </section>
 
           <div class="github-connect-panel" id="github-connect">
             <h3>채팅에서 Plugin Creator로 등록·설치 요청하기</h3>
